@@ -47,6 +47,17 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 
 	}
+
+	//Para tabla Planteles
+	static public function mdlPlanteles($cveCentro){
+
+		$stmt = Conexion::conectar()->prepare("SELECT PL.Nombre_Plantel, PL.`Status`, CE.Nombre_Ctro_Educativo FROM plantel PL INNER JOIN ctro_educativo CE ON PL.cve_Ctro_Educativo = CE.cve_Ctro_Educativo
+			WHERE PL.cve_Ctro_Educativo=$cveCentro");
+		$stmt -> execute();
+		
+		return $stmt -> fetchAll();
+
+	}
 	//Para tabla Usuarios
 	static public function mdlMostrarUsuarios(){
 
@@ -60,7 +71,15 @@ class ModeloConsulta{
 	//Para tabla Ofertas en revision
 	static public function mdlMostrarOrevision(){
 
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM oferta_edu WHERE STATUS='0'");
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE oferta_edu.Status ='0'");
+
 		$consulta -> execute();
 
 
@@ -70,7 +89,14 @@ class ModeloConsulta{
 	//Para tabla Ofertas aprobadas
 	static public function mdlMostrarOaprobadas(){
 
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM oferta_edu WHERE STATUS='1'");
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE oferta_edu.Status ='1'");
 		$consulta -> execute();
 
 
@@ -80,7 +106,14 @@ class ModeloConsulta{
 	//Para tabla Ofertas rechazadas
 	static public function mdlMostrarOrechazadas(){
 
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM oferta_edu WHERE STATUS='4'");
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE oferta_edu.Status ='2'");
 		$consulta -> execute();
 
 

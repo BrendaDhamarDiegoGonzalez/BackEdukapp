@@ -50,36 +50,55 @@
     //mensual => reporte mensual
 
     if (isset($_GET["ruta"])) {
-        $ruta=($_GET["ruta"]);
+        
+        $ruta = explode("/",$_GET["ruta"]); 
+
+        if(isset($ruta[0])){
+
+            $modulo = $ruta[0];
+
+            if($modulo == "centros"){
+              //Centros educativos
+              include "modulos/centroseducativos.php";
+            }else if($modulo == "usuarios"){
+              //Panel de usuarios
+              include "modulos/paneldeusuarios.php";
+            }else if ($modulo =="revision") {
+              //Ofertas en revisión
+              include "modulos/ofertasrevision.php";
+            }else if ($modulo=="aprobadas") {
+              //Ofertas aprobadas
+              include "modulos/ofertasaprobadas.php";
+            }else if ($modulo=="rechazadas") {
+              //Ofertas rechazadas
+              include "modulos/ofertasrechazadas.php";
+            }else if ($modulo == "reporte") {
+              //reporte diario
+              include "modulos/reportes.php";
+            }else if ($modulo == "mensual") {
+              //reporte mensual
+              include "modulos/reportesmensuales.php";
+            }else if ($modulo == "planteles") {
+              //
+              include "modulos/planteles.php";
+            }
+            
+            
+            }
+
+
+            if(isset($ruta[1])){
+                $cveCentro = $ruta[1];
+            }
+
+        }
+
+        else{
+            //Tablero (contenido)
+              include "modulos/tablero.php";
+            }
     
-    if($ruta == "centros"){
-      //Centros educativos
-      include "modulos/centroseducativos.php";
-    }else if($ruta == "usuarios"){
-      //Panel de usuarios
-      include "modulos/paneldeusuarios.php";
-    }else if ($ruta =="revision") {
-      //Ofertas en revisión
-      include "modulos/ofertasrevision.php";
-    }else if ($ruta=="aprobadas") {
-      //Ofertas aprobadas
-      include "modulos/ofertasaprobadas.php";
-    }else if ($ruta=="rechazadas") {
-      //Ofertas rechazadas
-      include "modulos/ofertasrechazadas.php";
-    }else if ($ruta == "reporte") {
-      //reporte diario
-      include "modulos/reportes.php";
-    }else if ($ruta == "mensual") {
-      //reporte mensual
-      include "modulos/reportesmensuales.php";
-    }
     
-    
-    }else{
-    //Tablero (contenido)
-      include "modulos/tablero.php";
-    }
     ?>
 
     <!-- jQuery -->

@@ -13,7 +13,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="<?php echo $url.""?>" class="brand-link">
       <h1 class="text-center">Edukapp</h1>
     </a>
     <!-- Sidebar -->

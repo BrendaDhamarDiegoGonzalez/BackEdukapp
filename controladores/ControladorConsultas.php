@@ -40,6 +40,14 @@ class ControladorConsultas{
 		return $respuesta;
 
 	}
+	//Para llenar tabla planteles
+	static public function ctrPlanteles($cveCentro){
+
+		$respuesta = ModeloConsulta::mdlPlanteles($cveCentro);
+		 
+		return $respuesta;
+
+	}
 	//Para llenar tabla usuarios
 	static public function ctrUsuarios(){
 

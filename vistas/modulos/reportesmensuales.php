@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
-            <i class="far fa-chart-bar"></i>
+            <i class="far fa-chart-bar text-center"></i>
             Reporte Mensual
           </h3>
         </div>
