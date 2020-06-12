@@ -1,5 +1,6 @@
 <?php
 
+
 class ControladorConsultas{
 	
 	static public function ctrConsultaBD(){
@@ -87,5 +88,44 @@ class ControladorConsultas{
 
 		return $respuesta;
 
+	}
+	//********************************************************//
+	//							CRUD 						//
+	//********************************************************//
+	
+	static public function ctrInsertarCentro(){
+
+		if(isset($_POST["nombre"])){
+		$nombre=$_POST['nombre'];
+		$direccion=$_POST['direccion'];
+		$telefono=$_POST['telefono'];
+		$correo=$_POST['correo'];
+		$pagado=$_POST['pagado'];
+		$logo=$_POST['logo'];
+		$imgcorp=$_POST['imgcorp'];
+		$color=$_POST['color'];
+
+		$datos = array(
+		'nombre' => $_POST['nombre'],
+		'direccion' => $_POST['direccion'],
+		'telefono' => $_POST['telefono'],
+		'correo' => $_POST['correo'],
+		'pagado'=>$_POST['pagado'],
+		'logo'=>$_POST['logo'],
+		'imgcorp'=>$_POST['imgcorp'],
+		'color'=>$_POST['color']
+		);
+		//print_r($datos);
+		//echo $pagado;
+		$respuesta = ModeloConsulta::mdlIngresarCentro($datos);
+		/*
+		print_r($respuesta);
+		if($respuesta == "ok"){
+		echo "Si se mando";
+		}else{
+		echo "no se mando";
+		}
+		*/
+		}
 	}
 }

@@ -122,4 +122,3 @@ foreach ($planteles as $key => $mostrar) {
           </div>
 
   </div>
- 

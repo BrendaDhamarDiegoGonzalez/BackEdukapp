@@ -130,5 +130,138 @@ class ModeloConsulta{
 		return $stmt -> fetch();
 
 	}
+	//Para formulario modificar Centros
+	static public function mdlMostrarCentrosForm($cveCentro){
+
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE cve_Ctro_Educativo = :id");
+		$consulta -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+
+	}
+
+	//********************************************************//
+	//							CRUD PARA CENTROS			  //
+	//********************************************************//
+	//Ingresar
+	static public function mdlIngresarCentro($datos){
+
+		$stmt = Conexion::conectar()->prepare("CALL sp_centro_registrar(:Nombre,:Direccion,:Telefono,:Correo,:Logo,:Color,:Imgcorp,'','','','')");
+
+		$stmt->bindParam(":Nombre", $datos["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Direccion", $datos["direccion"], PDO::PARAM_STR);
+		$stmt->bindParam(":Telefono", $datos["telefono"], PDO::PARAM_STR);
+		$stmt->bindParam(":Correo", $datos["correo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Logo", $datos["logo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Imgcorp", $datos["imgcorp"], PDO::PARAM_STR);
+		$stmt->bindParam(":Color", $datos["color"], PDO::PARAM_STR);
+		
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+
+		//$stmt->close();
+		$stmt = null;
+
+	}
+	//Eliminar
+	static public function mdlEliminarCentro($cveCentro){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM ctro_educativo WHERE cve_Ctro_Educativo = :id");
+
+		$stmt -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
+
+		if($stmt -> execute()){
+
+			return "ok";
+		
+		}else{
+
+			return "error";	
+
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
+	//Actualizar vista de centro
+	static public function mdlActualizarVista($cveCentro){
+
+					$stmt = Conexion::conectar()->prepare("UPDATE ctro_educativo SET STATUS = 0 WHERE cve_Ctro_Educativo = :id");
+					$stmt -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
+
+					if($stmt -> execute()){
+
+						return "ok";
+
+					}else{
+
+							print_r(Conexion::conectar()->errorInfo());
+
+					}
+
+					$stmt-> close();
+
+					$stmt = null;
+
+
+	}
+
+	//Editar centro
+		static public function mdlEditarCentro($datos){
+
+		$stmt = Conexion::conectar()->prepare("UPDATE ctro_educativo SET Nombre_Ctro_Educativo = :Nombre, Direccion = :Direccion, Telefono_Ctro_Educativo = :Telefono, CorreoE_Ctro_Educativo = :Correo, ImgLogoHome = :Logo, ImgCorporativa = :Imgcorp, CentroPagado=:Pagado, Color_Corporativo=:Color WHERE cve_Ctro_Educativo = :id");
+
+		
+		$stmt->bindParam(":Nombre", $datos["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Direccion", $datos["direccion"], PDO::PARAM_STR);
+		$stmt->bindParam(":Telefono", $datos["telefono"], PDO::PARAM_STR);
+		$stmt->bindParam(":Correo", $datos["correo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Pagado", $datos["pagado"], PDO::PARAM_STR);
+		$stmt->bindParam(":Logo", $datos["logo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Imgcorp", $datos["imgcorp"], PDO::PARAM_STR);
+		$stmt->bindParam(":Color", $datos["color"], PDO::PARAM_STR);
+		$stmt->bindParam(":id", $datos['id'], PDO::PARAM_INT);
+
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			//return "error";
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+
+		//$stmt->close();
+		$stmt = null;
+
+	}
+	//Buscar centro
+	static public function mdlBuscarCentro($nombre){
+
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE Nombre_Ctro_educativo= :Nombre");
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+
+	}
+
 
 }

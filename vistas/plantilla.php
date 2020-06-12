@@ -79,8 +79,23 @@
               //reporte mensual
               include "modulos/reportesmensuales.php";
             }else if ($modulo == "planteles") {
-              //
+              //planteles de centro educativo
               include "modulos/planteles.php";
+            }else if ($modulo == "registro"){
+                include "modulos/registro.php";
+               // include "../controladores/ControladorConsultas.php";
+            }else if ($modulo == "eliminar"){
+                include "modulos/eliminar.php";
+               
+            }else if ($modulo == "modificar"){
+                include "modulos/modificar.php";
+               
+            }else if ($modulo == "modificar2"){
+                include "modulos/modificar2.php";
+               
+            }else if ($modulo == "buscar"){
+                include "modulos/buscarCentro.php";
+               
             }
             
             
