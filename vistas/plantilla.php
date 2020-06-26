@@ -36,7 +36,6 @@
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
-
     <?php
     //Barra lateral
     include "modulos/barra.php";
@@ -95,6 +94,15 @@
                
             }else if ($modulo == "buscar"){
                 include "modulos/buscarCentro.php";
+               
+            }else if ($modulo == "modificarPlan"){
+                include "modulos/modificarPlantel.php";
+               
+            }else if ($modulo == "modificarUsuario"){
+                include "modulos/modificarUsuario.php";
+               
+            }else if ($modulo == "eliminarPlan"){
+                include "modulos/eliminarPlan.php";
                
             }
             

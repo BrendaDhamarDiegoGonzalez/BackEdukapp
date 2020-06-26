@@ -30,10 +30,6 @@ foreach ($mod as $key => $mostrar) {
 				<div class="">
 					<form method="post"  action="<?php echo $url."modificar2/".$id?>" enctype="multipart/form-data" class="px-5 py-3">
 						<div class="form-group">
-							<label for="formGroupExampleInput">Id</label>
-							<input required="" type="text" class="form-control" id="id_c" name="id_c" onlyread value="<?php echo $id ?>" placeholder="Id">
-						</div>
-						<div class="form-group">
 							<label for="formGroupExampleInput">Nombre del Centro</label>
 							<input required="" type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $nombre ?>" placeholder="Nombre del Centro">
 						</div>

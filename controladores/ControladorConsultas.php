@@ -49,6 +49,13 @@ class ControladorConsultas{
 		return $respuesta;
 
 	}
+	static public function ctrNomCentro($cveCentro){
+
+		$respuesta = ModeloConsulta::mdlMostrarCentrosForm($cveCentro);
+		 
+		return $respuesta;
+
+	}
 	//Para llenar tabla usuarios
 	static public function ctrUsuarios(){
 

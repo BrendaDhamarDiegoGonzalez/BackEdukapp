@@ -14,8 +14,11 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?php echo $url.""?>" class="brand-link">
-      <h1 class="text-center">Edukapp</h1>
+      <img src="<?php echo $url ?>vistas/modulos/logo.png" alt="Logo Edukapp" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Edukapp</span>
     </a>
+
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->

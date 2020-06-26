@@ -71,9 +71,9 @@
               ?>
               <td class="text-center"><button type="button" class="btn btn-primary"><a href="<?php echo $url."modificar/".$id_centro?>"> <i class="fas fa-pen text-light"></i></a></button></td>
 
-              <td class="text-center"><button type="button" name="eliminar"class="btn badge-danger"><a href="<?php echo $url."eliminar/".$id_centro?>"><i class="far fa-trash-alt"></i></a></button></td>
+              <td class="text-center"><button type="button" name="eliminar"class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminar/".$id_centro?>"><i class="far fa-trash-alt"></i></a></button></td>
 
-              <td class="text-center"><button type="button" class="btn badge-warning" ><a href="<?php echo $url."planteles/".$id_centro?>"><i class="far fa-eye"></i></a></button></td>
+              <td class="text-center"><button type="button" class="btn badge-warning" ><a class="text-light" href="<?php echo $url."planteles/".$id_centro?>"><i class="far fa-eye"></i></a></button></td>
             </tr>
 
             <?php
@@ -111,11 +111,13 @@
                           <label for="formGroupExampleInput2">Email</label>
                           <input required="" type="email" class="form-control" id="correo" name="correo" placeholder="Email">
                         </div>
+                        <!--
                         <div class="form-group">
                           <label for="formGroupExampleInput2">Centro Pagado</label><br>
                           <input type="radio" id="pagado" name="pagado" value=1><label for="formGroupExampleInput2"> Si</label><br>
                           <input type="radio" id="pagado" name="pagado" value=0><label for="formGroupExampleInput2"> No</label><br>
                         </div>
+                      -->
                         <div class="form-group">
                           <label for="formGroupExampleInput2">Imagen del logo</label>
                           <input type="file" class="form-control-file" id="logo" name="logo">
@@ -128,7 +130,7 @@
                           <label for="formGroupExampleInput2">Color Corporativo</label>
                           <input type="color" id="color" name="color" value="#D9754A">
                         </div>
-                        <input class=" btn btn-primary" type="submit" value="Guardar" >
+                        <input class=" btn btn-primary" type="submit"  value="Guardar" >
                       </form>
                     </div>
                   </div>

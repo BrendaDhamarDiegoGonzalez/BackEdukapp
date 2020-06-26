@@ -79,7 +79,7 @@ foreach ($aspihoy as $key => $value) {
 
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-danger">
+          <div class="small-box bg-secondary ">
             <div class="inner">
               <h3><?php echo $aspihoy; ?></h3>
               <p>Aspirantes registrados hoy</p>

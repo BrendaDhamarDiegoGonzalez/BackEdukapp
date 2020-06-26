@@ -3,20 +3,19 @@ if (isset($_GET["ruta"])) {
 
 $ruta = explode("/",$_GET["ruta"]);
 if(isset($ruta[1])){
-$cveCentro = $ruta[1];
+$cvePlantel=$ruta[1];
 }
 }
+		
+ 
+$elmPlan=ModeloConsulta::mdlEliminarPlantel($cvePlantel);
 
-
-  //$elm=ModeloConsulta::mdlEliminarCentro($cveCentro);
-$elm=ModeloConsulta::mdlActualizarVista($cveCentro);
-
-if($elm == "ok"){
+if($elmPlan == "ok"){
 	?>
 	<div class="content-wrapper">
 		<div class="content-header align-content-center ">
 			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-				<strong>Centro Eliminado!</strong> Los datos fueron eliminados
+				<strong>Plantel Eliminado!</strong> Los datos fueron eliminados
 			</div>
 			<div class="align-content-center">
 			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>
