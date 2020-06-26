@@ -8,3 +8,6 @@
 >En esta version se pueden insertar, modificar y eliminar centros educativos, usuarios y planteles
 
 Visita ![Edukapp](https://edukapp.com.mx/)
+
+#### Versión 3
+En la versión 3 esta completo el crud para los centros educativos
