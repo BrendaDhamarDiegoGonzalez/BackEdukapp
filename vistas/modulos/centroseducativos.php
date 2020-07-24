@@ -5,7 +5,7 @@
       <h1 class="m-0 text-dark text-center">Centros Educativos</h1>
     </div><!-- Fin titulo -->
     <div class="p-3  col-sm-12 "><!-- Sección buscar centro-->
-      <form method="post"  action="<?php echo $url."buscar"?>">
+      <form method="post"  action="<?php echo $url."buscar"?>"><!--Comienza formulario de buscar-->
         <div class="form-group row ">
           <label class=" col-form-label">Buscar</label>
           <div>
@@ -15,7 +15,7 @@
             <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
           </div>
         </div>
-      </form>
+      </form><!--Termina formulario de buscar-->
     </div><!-- Fin sección buscar centro-->
     <div class="px-3  col-sm-12"><!--Div insertar-->
       <div class="form-group row">

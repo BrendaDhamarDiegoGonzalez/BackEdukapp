@@ -6,6 +6,7 @@ if(isset($ruta[1])){
 	$cveCentro = $ruta[1];
 	$cvePlan=$ruta[1];
 	$cveUsuario=$ruta[1];
+	$cveOferta=$ruta[1];
 }
 
 }
@@ -151,6 +152,56 @@ if($respuesta == "ok"){
 			</div>
 			<div class="align-content-center">
 			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."usuarios"?>" >Aceptar</a></button>
+			</div>
+		</div>
+	</div>
+	<?php 
+	}	
+}
+//***********************************************************OFERTAS**********************************************
+if(isset($_POST["nombreCentro"])){
+
+
+	$datosof = array(
+	//'nombreCentro'=>$_POST['nombreCentro'],
+	'oferta'=>$_POST['oferta'],
+	'costo'=>$_POST['costo'],
+	'duracion'=>$_POST['duracion'],
+	'desc'=>$_POST['desc'],
+	'nivel'=>$_POST['nivel'],
+	'mod'=>$_POST['mod'],
+	'status' => $_POST['status'],
+	'idOferta'=>$cveOferta
+	);
+
+	//print_r($datosof);
+	
+	$respuesta = ModeloConsulta::mdlEditarOferta($datosof);
+
+if($respuesta == "ok"){
+	?>
+	<div class="content-wrapper">
+		<div class="content-header align-content-center ">
+			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
+				<strong>Oferta Modificada!</strong> Los datos fueron modificados
+			</div>
+			<div class="align-content-center">
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."revision"?>" >Aceptar</a></button>
+			</div>
+		</div>
+	</div>
+
+
+	<?php
+	}else{
+	?>
+	<div class="content-wrapper">
+		<div class="content-header align-content-center ">
+			<div class="alert alert-danger" role="alert">
+				<strong>Algo salió mal  </strong> Rellene todos los campos del formulario
+			</div>
+			<div class="align-content-center">
+			<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3">
 			</div>
 		</div>
 	</div>

@@ -100,7 +100,10 @@
                
             }else if ($modulo == "modificarUsuario"){
                 include "modulos/modificarUsuario.php";
-               
+
+            }else if ($modulo == "modificarOferta"){
+                include "modulos/modificarOferta.php";
+
             }else if ($modulo == "eliminarPlan"){
                 include "modulos/eliminarPlan.php";
                

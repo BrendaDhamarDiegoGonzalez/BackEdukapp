@@ -71,7 +71,7 @@ class ModeloConsulta{
 	//Para tabla Ofertas en revision
 	static public function mdlMostrarOrevision(){
 
-		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
 			FROM ctro_educativo
 			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
 			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
@@ -89,7 +89,7 @@ class ModeloConsulta{
 	//Para tabla Ofertas aprobadas
 	static public function mdlMostrarOaprobadas(){
 
-		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
 			FROM ctro_educativo
 			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
 			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
@@ -275,8 +275,9 @@ class ModeloConsulta{
 	}
 	//Buscar centro
 	static public function mdlBuscarCentro($nombre){
+		$nombre = '%'.$nombre.'%';
 
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE Nombre_Ctro_educativo= :Nombre");
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE Nombre_Ctro_educativo LIKE :Nombre");
 		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
 		$consulta -> execute();
 
@@ -374,8 +375,9 @@ class ModeloConsulta{
 	//********************************************************//
 	//Buscar Usuario 
 	static public function mdlBuscarUsuario($nombre){
+		$nombre = '%'.$nombre.'%';
 
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM usuario WHERE Nombre_Usuario= :Nombre");
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM usuario WHERE Nombre_Usuario LIKE :Nombre");
 		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
 		$consulta -> execute();
 
@@ -443,4 +445,100 @@ class ModeloConsulta{
 		$stmt = null;
 
 	}
+
+	//*****************************OFERTAS************************************
+
+	//Para formulario modificar oferta
+	static public function mdlMostrarOfertaForm($cveOferta){
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,oferta_edu.Costo, oferta_edu.Duracion, oferta_edu.Descripcion, oferta_edu.Status, NombreNivel,Modalidad
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE oferta_edu.cve_OfertaEdu =:id");
+		$consulta -> bindParam(":id", $cveOferta, PDO::PARAM_INT);
+		$consulta -> execute();
+
+		return $consulta -> fetchAll();
+
+	}
+	static public function mdlEditarOferta($datosof){
+
+		$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Nombre=:Oferta, Costo=:Costo, Duracion=:Durac, Descripcion=:Descr, cve_Nivel=:Nivel, Cve_Modalidad=:Mod, Status = :Status, FechaActualizacion= NOW() WHERE cve_OfertaEdu = :Id");
+
+		
+		//$stmt->bindParam(":NomCen", $datosof["nombreCentro"], PDO::PARAM_STR);
+		$stmt->bindParam(":Oferta", $datosof["oferta"], PDO::PARAM_STR);
+		$stmt->bindParam(":Costo", $datosof["costo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Durac", $datosof["duracion"], PDO::PARAM_STR);
+		$stmt->bindParam(":Descr", $datosof["desc"], PDO::PARAM_STR);
+		$stmt->bindParam(":Nivel", $datosof["nivel"], PDO::PARAM_INT);
+		$stmt->bindParam(":Mod", $datosof["mod"], PDO::PARAM_INT);
+		$stmt->bindParam(":Status", $datosof["status"], PDO::PARAM_INT);
+		$stmt->bindParam(":Id", $datosof["idOferta"], PDO::PARAM_INT);
+
+
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return "error";
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+
+		//$stmt->close();
+		$stmt = null;
+
+	}
+
+	//Buscar oferta
+
+	static public function mdlBuscarOferta($nombre){
+		$nombre = '%'.$nombre.'%';
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE Nombre_Ctro_educativo LIKE :Nombre AND oferta_edu.Status ='0'");
+
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+
+	}
+	//Buscar oferta Aprobada
+
+	static public function mdlBuscarOfertaAprobada($nombre){
+		$nombre = '%'.$nombre.'%';
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
+			FROM ctro_educativo
+			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
+			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
+			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
+			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
+			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
+			WHERE Nombre_Ctro_educativo LIKE :Nombre AND oferta_edu.Status ='1'");
+
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+
+	}
+
 }

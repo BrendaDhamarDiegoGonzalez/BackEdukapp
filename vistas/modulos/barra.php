@@ -16,7 +16,7 @@
     <a href="<?php echo $url.""?>" class="brand-link">
       <img src="<?php echo $url ?>vistas/modulos/logo.png" alt="Logo Edukapp" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Edukapp</span>
+      <span class="brand-text font-weight-light"><h4>Edukapp</h4></span>
     </a>
 
     <!-- Sidebar -->
@@ -24,10 +24,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $url ?>vistas/modulos/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $url ?>vistas/modulos/foto.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Edgar</a>
+          <a href="#" class="d-block"><h4>Dhamar</h4></a>
         </div>
       </div>
       <!-- Sidebar Menu -->
@@ -91,12 +91,6 @@
                   <p>Aprobadas</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="<?php echo $url."rechazadas" ?>"  class="nav-link">
-                  <i class="fas fa-times-circle nav-icon"></i>
-                  <p>Rechazadas</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item has-treeview">
@@ -111,7 +105,7 @@
               <li class="nav-item">
                 <a href="<?php echo $url."reporte" ?>"  class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Reportes </p>
+                  <p>Reportes Diarios</p>
                 </a>
               </li>
             </ul>

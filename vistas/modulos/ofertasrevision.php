@@ -10,6 +10,20 @@
     </div><!-- /.container-fluid -->
   </div>
 
+  <div class="p-3  col-sm-12 "><!-- Sección buscar oferta-->
+      <form method="post"  action="<?php echo $url."buscar"?>"><!--Comienza formulario de buscar-->
+        <div class="form-group row ">
+          <label class=" col-form-label">Filtro</label>
+          <div>
+            <input type="text" class="form-control" id="buscarOferta" name="buscarOferta" placeholder="Nombre centro educativo">
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </form><!--Termina formulario de buscar-->
+    </div><!-- Fin sección buscar oferta-->
+
   <div class="card px-5"><!-- /.card-header -->
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -29,6 +43,7 @@
           $revision=ControladorConsultas::ctrOrevision();
 
           foreach ($revision as $key => $mostrar) {
+          $id_Ofer=$mostrar['cve_OfertaEdu'];
           $centro=$mostrar['Nombre_Ctro_Educativo'];
           $oferta=$mostrar['Nombre'];
           $nivel=$mostrar['NombreNivel'];
@@ -40,44 +55,11 @@
               <td><?php echo $oferta ?></td>
               <td class="text-center"><?php echo $nivel ?></td>
               <td class="text-center"><?php echo $modalidad ?></td>
-              <td class="text-center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modificarOferta"><i class="fas fa-pen"></button></td>
+              <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarOferta/".$id_Ofer?>"><i class="fas fa-pen"></i></a></button></td>
             </tr>
             <?php
               }
-            ?>   
-            <!-- Modal -->
-              <div class="modal" id="modificarOferta" tabindex="-1" role="dialog" aria-labelledby="modificarOfertaLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modificarOfertaLabel">Modificar Oferta</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput">Oferta</label>
-                          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Oferta">
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Nivel</label>
-                          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Nivel">
-                        </div>
-                        <div class="form-group">
-                          <label for="formGroupExampleInput2">Modalidad</label>
-                          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Modalidad">
-                        </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                      <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
-                  </div>
-                </div>
-              </div><!--Fin Modal -->     
+            ?>      
           </tbody>
         </table>
       </div><!-- /.table-responsive -->

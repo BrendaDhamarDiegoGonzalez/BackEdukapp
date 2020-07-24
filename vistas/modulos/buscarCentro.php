@@ -236,4 +236,115 @@ if(isset($_POST["buscarUsuario"])){
 </div>
 <?php 
 }
+//*****************************************************************Ofertas************************************************
+if(isset($_POST["buscarOferta"])){
+
+  $nombre=$_POST['buscarOferta'];
+
+  $ofertas=ModeloConsulta::mdlBuscarOferta($nombre);
+ ?>
+<div class="content-wrapper">
+  <div class="content-header align-content-center ">
+    <div class="col-12"><!-- Titulo -->
+    <h1 class="m-0 text-dark text-center">Ofertas Encontradas</h1>
+    </div><!-- Fin titulo -->
+  </div>
+  <div class="card px-5"><!-- /.card-header -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table m-0">
+          <thead>
+            <tr>
+              <th>Centro </th>
+              <th>Oferta</th>
+              <th class="text-center">Nivel</th>
+              <th class="text-center">Modalidad</th>
+              <th class="text-center">Modificar</th>      
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+
+          foreach ($ofertas as $key => $mostrar) {
+          $id_Ofer=$mostrar['cve_OfertaEdu'];
+          $centro=$mostrar['Nombre_Ctro_Educativo'];
+          $oferta=$mostrar['Nombre'];
+          $nivel=$mostrar['NombreNivel'];
+          $modalidad=$mostrar['Modalidad'];
+
+          ?>
+            <tr>
+              <td><?php echo $centro ?></td>
+              <td><?php echo $oferta ?></td>
+              <td class="text-center"><?php echo $nivel ?></td>
+              <td class="text-center"><?php echo $modalidad ?></td>
+              <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarOferta/".$id_Ofer?>"><i class="fas fa-pen"></i></a></button></td>
+            </tr>
+            <?php
+              }
+            ?>      
+          </tbody>
+        </table>
+      </div><!-- /.table-responsive -->
+    </div>
+  </div>
+</div>
+<?php 
+}//*********************************************Ofertas Aprobadas************************************************
+if(isset($_POST["buscarOfeAp"])){
+
+  $nombre=$_POST['buscarOfeAp'];
+
+  $ofertas=ModeloConsulta::mdlBuscarOfertaAprobada($nombre);
+ ?>
+<div class="content-wrapper">
+  <div class="content-header align-content-center ">
+    <div class="col-12"><!-- Titulo -->
+    <h1 class="m-0 text-dark text-center">Ofertas Encontradas</h1>
+    </div><!-- Fin titulo -->
+  </div>
+  <div class="card px-5"><!-- /.card-header -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table m-0">
+          <thead>
+            <tr>
+              <th>Centro </th>
+              <th>Oferta</th>
+              <th class="text-center">Nivel</th>
+              <th class="text-center">Modalidad</th>
+              <th class="text-center">Modificar</th>      
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+
+          foreach ($ofertas as $key => $mostrar) {
+          $id_Ofer=$mostrar['cve_OfertaEdu'];
+          $centro=$mostrar['Nombre_Ctro_Educativo'];
+          $oferta=$mostrar['Nombre'];
+          $nivel=$mostrar['NombreNivel'];
+          $modalidad=$mostrar['Modalidad'];
+
+          ?>
+            <tr>
+              <td><?php echo $centro ?></td>
+              <td><?php echo $oferta ?></td>
+              <td class="text-center"><?php echo $nivel ?></td>
+              <td class="text-center"><?php echo $modalidad ?></td>
+              <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarOferta/".$id_Ofer?>"><i class="fas fa-pen"></i></a></button></td>
+            </tr>
+            <?php
+              }
+            ?>      
+          </tbody>
+        </table>
+      </div><!-- /.table-responsive -->
+    </div>
+  </div>
+</div>
+<?php 
+}
+ ?>
+
  ?>
