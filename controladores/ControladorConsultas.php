@@ -24,14 +24,6 @@ class ControladorConsultas{
 		return $consulta;
 
 	}
-	//Para aspirantes de hoy
-	static public function ctrAspihoy($hoy){
-
-		$respuesta = ModeloConsulta::mdlAspihoy($hoy);
-
-		return $respuesta;
-
-	}
 
 	//Para llenar tabla centros educativos
 	static public function ctrCentros(){
@@ -92,6 +84,14 @@ class ControladorConsultas{
 	static public function ctrCenhoy($hoy){
 
 		$respuesta = ModeloConsulta::mdlCenhoy($hoy);
+
+		return $respuesta;
+
+	}
+	//Subcateegorias de ofertas
+	static public function ctrSubcategorias(){
+
+		$respuesta = ModeloConsulta::mdlMostrarSubcategorias();
 
 		return $respuesta;
 

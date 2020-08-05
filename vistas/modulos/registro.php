@@ -97,9 +97,6 @@ if(isset($_POST["nombrePlantel"])){
 	<?php 
 	}	
 }
- ?>
-
-<?php
 //********************************************USUARIOS*****************************************************************
 if(isset($_POST["nombreUsu"])){
 
@@ -146,6 +143,58 @@ if(isset($_POST["nombreUsu"])){
 	</div>
 	<?php 
 	}		
+}
+//********************************************OFERTAS*****************************************************************
+if(isset($_POST["nombreOfe"])){
+
+	$datos = array(
+	'nombre' => $_POST['nombreOfe'],
+	'costo' => $_POST['costo'],
+	'dura' => $_POST['dura'],
+	'desc' => $_POST['desc'],
+	'nivel' => $_POST['nivel'],
+	'ofertaHtml'=>$_POST['ofertaHtml'],
+	'costoPeri'=>$_POST['costoPeri'],
+	'cate'=>$_POST['cate'],
+	'nomPdf'=>$_FILES['nomPdf']['name'],
+	'moda'=>$_POST['moda'],
+	'promo'=>$_POST['promo']
+	);
+
+	print_r($datos);
+	/*
+	$respuesta = ModeloConsulta::mdlInsertarOferta($datos);
+
+	//print_r($respuesta);
+	if($respuesta == "ok"){
+	?>
+	<div class="content-wrapper">
+		<div class="content-header align-content-center ">
+			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
+				<strong>Usuario Registrado!</strong> Los datos fueron guardados
+			</div>
+			<div class="align-content-center">
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."revision"?>" >Aceptar</a></button>
+			</div>
+		</div>
+	</div>
+
+
+	<?php
+	}else{
+	?>
+	<div class="content-wrapper">
+		<div class="content-header align-content-center ">
+			<div class="alert alert-danger" role="alert">
+				<strong>Oh no!</strong> Algo salió mal
+			</div>
+			<div class="align-content-center">
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."revision"?>" >Aceptar</a></button>
+			</div>
+		</div>
+	</div>
+	<?php 
+	}	*/	
 }
  ?>
 

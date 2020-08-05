@@ -10,7 +10,7 @@
     </div><!-- /.container-fluid -->
   </div>
 
-<div class="p-3  col-sm-12 "><!-- Sección buscar centro-->
+<div class="p-3  col-sm-12 "><!-- Sección buscar -->
 <form method="post"  action="<?php echo $url."buscar"?>">
   <div class="form-group row ">
     <label class=" col-form-label">Buscar</label>
@@ -22,7 +22,7 @@
     </div>
   </div>
 </form>
-</div><!-- Fin sección buscar centro-->
+</div><!-- Fin sección buscar -->
 <div class="px-3  col-sm-12"><!--Div insertar-->
 <div class="form-group row">
   <label class="col-form-label">Agregar Usuario  </label>
@@ -102,7 +102,11 @@
 
              }
                       
-             ?>   
+             ?>  
+             </tbody>
+             </table>
+             </div>
+             </div> 
              <!-- Modal -->
             <div class="modal" id="insertarUsuario" tabindex="-1" role="dialog" aria-labelledby="insertarUsuarioLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">

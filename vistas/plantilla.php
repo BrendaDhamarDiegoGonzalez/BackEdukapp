@@ -107,6 +107,8 @@
             }else if ($modulo == "eliminarPlan"){
                 include "modulos/eliminarPlan.php";
                
+            }else if ($modulo == "generar"){
+                include "modulos/generadordereportes.php";
             }
             
             

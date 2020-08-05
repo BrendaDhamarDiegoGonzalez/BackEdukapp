@@ -27,15 +27,6 @@ class ModeloConsulta{
 		return $stmt -> fetch();
 
 	}
-	//Aspirantes hoy
-	static public function mdlAspihoy($hoy){
-
-		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM aspirante WHERE FechaAlta>='$hoy'");
-		$stmt -> execute();
-		
-		return $stmt -> fetch();
-
-	}
 
 	//Para tabla Centros
 	static public function mdlMostrarCentros(){
@@ -539,6 +530,66 @@ class ModeloConsulta{
 
 		return $consulta -> fetchAll();
 
+	}
+	//Sbcategoria de oferta
+	static public function mdlMostrarSubcategorias(){
+		$consulta=Conexion::conectar()->prepare("SELECT id_subcategoria, descripcion_subcat FROM subcategoria");
+		$consulta -> execute();
+	}
+
+	//Insertar oferta
+	static public function mdlInsertarOferta($datos){
+
+		$stmt = Conexion::conectar()->prepare("CALL sp_oferta_edu_inserta (:Nombre,:Costo,:Dura,:Desc,:Nivel,:OfertaHtml,:CostoPeri,:Cate,:NomPdf,'',:Moda,:Promo)");
+
+		$stmt->bindParam(":Nombre", $datos["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Costo", $datos["costo"], PDO::PARAM_STR);
+		$stmt->bindParam(":Dura", $datos["dura"], PDO::PARAM_STR);
+		$stmt->bindParam(":Desc", $datos["desc"], PDO::PARAM_STR);
+		$stmt->bindParam(":Nivel", $datos["nivel"], PDO::PARAM_INT);
+		$stmt->bindParam(":OfertaHtml", $datos["ofertaHtml"], PDO::PARAM_STR);
+		$stmt->bindParam(":CostoPeri", $datos["costoPeri"], PDO::PARAM_STR);
+		$stmt->bindParam(":Cate", $datos["cate"], PDO::PARAM_INT);
+		$stmt->bindParam(":NomPdf", $datos["nomPdf"], PDO::PARAM_STR);
+		$stmt->bindParam(":Moda", $datos["Moda"], PDO::PARAM_INT);
+		$stmt->bindParam(":Promo", $datos["promo"], PDO::PARAM_STR);
+		
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+
+		//$stmt->close();
+		$stmt = null;
+
+	}
+
+	//*****************************************************************
+	//								REPORTES
+	//*****************************************************************
+
+	static public function mdlReporteAspirantesHoy($hoy){
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta
+		FROM aspirante 
+		inner join oferta_edu OE on aspirante.cve_OfertaEdu=OE.cve_OfertaEdu
+		inner join oferta_plantel  on OE.cve_OfertaEdu=oferta_plantel.cve_OfertaEdu
+		inner join plantel P ON oferta_plantel.cve_Plantel=P.cve_Plantel
+		inner join ctro_Educativo CE on P.cve_Ctro_Educativo=CE.cve_Ctro_Educativo
+		WHERE CAST(aspirante.FechaAlta AS DATE) = '$hoy'
+		ORDER BY aspirante.FechaAlta ASC");
+
+		//$consulta->bindParam(":Hoy", $hoy, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
 	}
 
 }

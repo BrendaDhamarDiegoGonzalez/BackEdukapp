@@ -1,18 +1,10 @@
 <?php 
   $hoy = date("Y-m-d"); 
 
-  $aspihoy= ControladorConsultas::ctrAspihoy($hoy);
+  $mostrar = ModeloConsulta::mdlReporteAspirantesHoy($hoy);
+$aspihoy= count($mostrar);
   $cenhoy= ControladorConsultas::ctrCenhoy($hoy);
 
-  foreach ($aspihoy as $key => $value) {
-
-  $aspihoy=$value;
-  }
-
-  foreach ($cenhoy as $key => $value) {
-
-  $cenhoy=$value;
-  }
 
  ?>
 <div class="content-wrapper">
@@ -32,6 +24,19 @@
               <input type="text" class="knob" value="<?php echo $aspihoy; ?>" data-skin="tron" data-thickness="0.2" data-width="90"
                            data-height="90" data-fgColor="#3c8dbc" data-readonly="true">
               <div class="knob-label">Aspirantes registrados hoy</div>
+
+              <div class="p-3  col-sm-12"><!-- Sección generar reporte-->
+
+              <form method="post"  action="<?php echo $url."generar"?>">
+                <div class="form-group row ">
+                  <div>
+                    <button type="submit" class="btn btn-primary">Generar Reporte</button>
+                  </div>
+                </div>
+              </form>
+
+              </div><!-- Fin sección generar reporte-->
+
             </div>
             <!-- ./col -->
              <div class="col-6 col-md-3 text-center">
