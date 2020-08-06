@@ -147,19 +147,21 @@
                 </div>
                 <div class="form-group">
                   <label for="formGroupExampleInput2">Categoria</label>
-                  <select class="browser-default custom-select " name="cate">
-                    <option selected>Seleccione</option>
-                    <option value="1">Admininstración Pública</option>
-                    <option value="2">Empleo público</option>
-                    <option value="3">Posgrados</option>
-                    <option value="4">Arte y bellas artes</option>
-                    <option value="5">Arquitectura y Diseño</option>
-                    <option value="6">Diseño de Moda  Técnicas</option>
-                    <option value="7"> Sociales y humanidades</option>
-                    <option value="8">Psicología y ciencia del comportamiento</option>
-                    <option value="9">Educación</option>
-                    <option value="9">Derecho / leyes</option>
-                  </select>
+                  <?php $subcat = ModeloConsulta::mdlMostrarSubcategorias(); ?>
+                  <select name="cate" id="cate" class="form-control">
+                      <?php   
+                      if (count($subcat) > 0)
+                      {
+                      foreach ($subcat as $key => $value) {
+                      $idsubcat = $value["id_subcategoria"];
+                      $nomCat = $value["descripcion_subcat"];?>
+                      <option value="<?php echo $idsubcat; ?>"><?php echo $nomCat; ?></option>
+                      <?php
+                      }
+                      }
+                      ?>
+                    </select>
+
                 </div>
                 <div class="form-group">
                   <label for="formGroupExampleInput2">PDF</label>

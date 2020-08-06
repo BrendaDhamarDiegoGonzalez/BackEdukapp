@@ -19,4 +19,7 @@
 ### Versión 6
 >Esta versión cuenta con el primer reporte y modificación en ofertas 
 
+### Versión 
+>Esta versión cuenta con 4 de los 5 reportes, falta el reporte de las URL´s y modificar el text area de el formulario para ingresar una oferta
+
 Visita ![Edukapp](https://edukapp.com.mx/)

@@ -14,13 +14,11 @@ foreach ($ofertasRev as $key => $value) {
   $ofr=$value;
 }
 
-$hoy = date("Y-m-d"); 
+ $hoy = date("Y-m-d"); 
 
-$aspihoy= ControladorConsultas::ctrAspihoy($hoy);
-
-foreach ($aspihoy as $key => $value) {
-  $aspihoy=$value;
-  }
+  $mostrar = ModeloConsulta::mdlReporteAspirantesHoy($hoy);
+$aspihoy= count($mostrar);
+  $cenhoy= ControladorConsultas::ctrCenhoy($hoy);
 ?>
 
 <div class="content-wrapper">  <!-- Content Header (Page header) -->

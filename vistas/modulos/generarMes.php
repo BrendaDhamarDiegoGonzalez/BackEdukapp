@@ -1,17 +1,19 @@
 <?php
 if(isset($_POST["centroE"])){
-  $cveCentro = $_POST['centroE'];
-$hoy = date("Y-m-d");
-print_r ($cveCentro);
-
-$mostrar = ModeloConsulta::mdlReporteAspirantesPorCentro($cveCentro,$hoy);
-$aspihoy= count($mostrar);
-  
+  $datos = array(
+  'mes' => date("m"),
+  'anio' => date("Y"),
+  'cve' => $_POST['centroE']
+   );
+  $mostrar =ModeloConsulta::mdlReporteAspirantesMesPorCentro($datos);
+$aspimes= count($mostrar);
+ 
 
 }else{
-$hoy = date("Y-m-d");
-$mostrar = ModeloConsulta::mdlReporteAspirantesHoy($hoy);
-$aspihoy= count($mostrar);
+$mes = date("m");
+$anio=date("Y");
+$mostrar = ModeloConsulta::mdlReporteAspirantesMes($mes,$anio);
+$aspimes= count($mostrar);
 }
 ?>
   <head>
@@ -77,7 +79,7 @@ $aspihoy= count($mostrar);
       <tbody>
         <?php
         $j=1;
-        for($i=0;$i<$aspihoy;$i++){
+        for($i=0;$i<$aspimes;$i++){
         $nombre=$mostrar[$i]['Nombre_Aspirante'];
         $aPaterno=$mostrar[$i]['Apaterno_Aspirante'];
         $aMaterno=$mostrar[$i]['Amaterno_Estudiante'];
@@ -127,7 +129,7 @@ $("table").tableExport({
 formats: ["xlsx","txt", "csv"], //Tipo de archivos a exportar ("xlsx","txt", "csv", "xls")
 position: 'top',  // Posicion que se muestran los botones puedes ser: (top, bottom)
 bootstrap: false,//Usar lo estilos de css de bootstrap para los botones (true, false)
-fileName: "ReporteDiarioAspirantes",    //Nombre del archivo
+fileName: "ReporteMensualAspirantes",    //Nombre del archivo
 });
 </script>
 </html>

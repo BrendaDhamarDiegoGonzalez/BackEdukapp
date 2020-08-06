@@ -531,10 +531,11 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 
 	}
-	//Sbcategoria de oferta
+	//Subcategoria de oferta
 	static public function mdlMostrarSubcategorias(){
-		$consulta=Conexion::conectar()->prepare("SELECT id_subcategoria, descripcion_subcat FROM subcategoria");
+		$consulta=Conexion::conectar()->prepare("SELECT * FROM subcategoria");
 		$consulta -> execute();
+		return $consulta -> fetchAll();
 	}
 
 	//Insertar oferta
@@ -570,6 +571,8 @@ class ModeloConsulta{
 
 	}
 
+
+
 	//*****************************************************************
 	//								REPORTES
 	//*****************************************************************
@@ -586,6 +589,68 @@ class ModeloConsulta{
 		ORDER BY aspirante.FechaAlta ASC");
 
 		//$consulta->bindParam(":Hoy", $hoy, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+	}
+	//Aspirantes por centro educativo
+	static public function mdlReporteAspirantesPorCentro($cveCentro,$hoy){
+		
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta
+		FROM aspirante 
+		inner join oferta_edu OE on aspirante.cve_OfertaEdu=OE.cve_OfertaEdu
+		inner join oferta_plantel  on OE.cve_OfertaEdu=oferta_plantel.cve_OfertaEdu
+		inner join plantel P ON oferta_plantel.cve_Plantel=P.cve_Plantel
+		inner join ctro_Educativo CE on P.cve_Ctro_Educativo=CE.cve_Ctro_Educativo
+		WHERE CAST(aspirante.FechaAlta AS DATE) = :Hoy AND CE.cve_Ctro_Educativo= :cve
+		ORDER BY aspirante.FechaAlta ASC");
+
+		$consulta->bindParam(":Hoy", $hoy, PDO::PARAM_STR);
+		$consulta->bindParam(":cve", $cveCentro, PDO::PARAM_INT);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+	}
+	//Aspirantes por mes
+	static public function mdlReporteAspirantesMes($mes,$anio){
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta
+		FROM aspirante 
+		inner join oferta_edu OE on aspirante.cve_OfertaEdu=OE.cve_OfertaEdu
+		inner join oferta_plantel  on OE.cve_OfertaEdu=oferta_plantel.cve_OfertaEdu
+		inner join plantel P ON oferta_plantel.cve_Plantel=P.cve_Plantel
+		inner join ctro_Educativo CE on P.cve_Ctro_Educativo=CE.cve_Ctro_Educativo
+WHERE YEAR(aspirante .FechaAlta) = :Anio
+ AND MONTH( aspirante .FechaAlta ) = :Mes 
+ORDER BY aspirante.FechaAlta ASC");
+
+		$consulta->bindParam(":Anio", $anio, PDO::PARAM_STR);
+		$consulta->bindParam(":Mes", $mes, PDO::PARAM_STR);
+		$consulta -> execute();
+
+
+		return $consulta -> fetchAll();
+	}
+	//Aspirantes por mes por centro
+	static public function mdlReporteAspirantesMesPorCentro($datos){
+
+		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta
+		FROM aspirante 
+		inner join oferta_edu OE on aspirante.cve_OfertaEdu=OE.cve_OfertaEdu
+		inner join oferta_plantel  on OE.cve_OfertaEdu=oferta_plantel.cve_OfertaEdu
+		inner join plantel P ON oferta_plantel.cve_Plantel=P.cve_Plantel
+		inner join ctro_Educativo CE on P.cve_Ctro_Educativo=CE.cve_Ctro_Educativo
+WHERE YEAR(aspirante .FechaAlta) = :Anio
+ AND MONTH( aspirante .FechaAlta ) = :Mes 
+ AND CE.cve_Ctro_Educativo = :Cve
+ORDER BY aspirante.FechaAlta ASC");
+
+		$consulta->bindParam(":Anio", $datos['anio'], PDO::PARAM_STR);
+		$consulta->bindParam(":Mes", $datos['mes'], PDO::PARAM_STR);
+		$consulta->bindParam(":Cve", $datos['cve'], PDO::PARAM_INT);
 		$consulta -> execute();
 
 

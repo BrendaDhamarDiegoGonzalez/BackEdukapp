@@ -109,6 +109,8 @@
                
             }else if ($modulo == "generar"){
                 include "modulos/generadordereportes.php";
+            }else if ($modulo == "generarMes"){
+                include "modulos/generarMes.php";
             }
             
             
