@@ -7,8 +7,17 @@ $cvePlantel=$ruta[1];
 }
 }
 		
- 
+
+$centros=ModeloConsulta::mdlMostrarPlantelForm($cvePlantel);
+        foreach ($centros as $key => $mostrar) {
+        $status=$mostrar['Status'];
+  }
+
+if ($status==1) {
 $elmPlan=ModeloConsulta::mdlEliminarPlantel($cvePlantel);
+}else{
+	$elmPlan=ModeloConsulta::mdlEliminarPlantel2($cvePlantel);
+}
 
 if($elmPlan == "ok"){
 	?>

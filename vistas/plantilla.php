@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="<?php echo $url ?>vistas/plugins/summernote/summernote-bs4.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="<?php echo $url ?>vistas/plugins/sweetAlert2/sweetalert2.min.css"> 
   </head>
 
   <body class="hold-transition sidebar-mini layout-fixed">
@@ -111,6 +113,8 @@
                 include "modulos/generadordereportes.php";
             }else if ($modulo == "generarMes"){
                 include "modulos/generarMes.php";
+            }else if ($modulo == "insertarOferta"){
+                include "modulos/insertarOferta.php";
             }
             
             
@@ -165,6 +169,8 @@
     <script src="<?php echo $url ?>vistas/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?php echo $url ?>vistas/dist/js/demo.js"></script>
+    <!--    Plugin sweet Alert 2  -->
+    <script src="<?php echo $url ?>vistas/plugins/sweetAlert2/sweetalert2.all.min.js"></script>
 
     <?php
     include "modulos/pie.php";

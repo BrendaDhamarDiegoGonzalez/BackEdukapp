@@ -7,16 +7,24 @@ $cveCentro = $ruta[1];
 }
 }
 
+$centros=ModeloConsulta::mdlMostrarCentrosForm($cveCentro);
+        foreach ($centros as $key => $mostrar) {
+        $status=$mostrar['Status'];
+  }
 
-  //$elm=ModeloConsulta::mdlEliminarCentro($cveCentro);
+if ($status==1) {
+	//$elm=ModeloConsulta::mdlEliminarCentro($cveCentro);
 $elm=ModeloConsulta::mdlActualizarVista($cveCentro);
+}else{
+	$elm=ModeloConsulta::mdlActualizarVista2($cveCentro);
+}
 
 if($elm == "ok"){
 	?>
 	<div class="content-wrapper">
 		<div class="content-header align-content-center ">
 			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-				<strong>Centro Eliminado!</strong> Los datos fueron eliminados
+				<strong>El centro fue modificado</strong> 
 			</div>
 			<div class="align-content-center">
 			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>

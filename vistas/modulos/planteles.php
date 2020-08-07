@@ -74,8 +74,6 @@ foreach ($nomPlan as $key => $mostrar) {
                       $id_Plantel=$mostrar['cve_Plantel'];
                       $plan=$mostrar['Nombre_Plantel'];
                       $status=$mostrar['Status'];
-
-                      if ($status==1) {
                         
                       ?>
                     <tr>
@@ -83,24 +81,32 @@ foreach ($nomPlan as $key => $mostrar) {
                       <?php 
                         if ($status==1) {  
                        ?>
-                      <td class="text-center"><span class="badge badge-success"><i class="fas fa-toggle-on"></span></i></td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-success">
+                          <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
+                            <i class="fas fa-toggle-on"></i>
+                          </a>
+                        </button>
+                      </td>
                       <?php 
-                        }elseif ($status==0) {   
+                        }else {   
                        ?>
-                       <td class="text-center"><i class="fas fa-toggle-off"></i></td>
-                       <?php 
-                          }elseif ($status==4) {
-                        ?>
-                        <td class="text-center"><i class="fas fa-adjust"></i></td>
+                       <td class="text-center">
+                        <button type="button" class="btn btn-warning">
+                          <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
+                            <i class="fas fa-toggle-off"></i>
+                          </a>
+                        </button>
+                       </td>
                        <?php 
                           }
-                        ?>
+                          ?>
                       <td class="text-center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modificarPlantel"><a class="text-light" href="<?php echo $url."modificarPlan/".$id_Plantel?>"><i class="fas fa-pen"></i></a></button></td>
                       <td class="text-center"><button type="button" class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>"><i class="far fa-trash-alt"></i></a></button></td>
 
                    <?php 
 
-                      }
+                      
                     }
   
                     ?>
