@@ -1,6 +1,38 @@
 <head>
   <link rel="stylesheet" href="../TinyEditor-master/style.css" />
   <script type="text/javascript" src="../TinyEditor-master/tinyeditor.js"></script>
+  <script type="text/javascript">
+    function tinyEditor () {
+ var textarea = $('.tinyEditor');
+ 
+if (textarea.size()) {
+ textarea.each(function () {
+ var editorWidth = $(this).outerWidth(true) * 100 / $(this).parent().outerWidth(true),
+     editorId = 'editor'+$(this).attr('id');
+ 
+editorId = new TINY.editor.edit(editorId, {
+ id: $(this).attr('id'),
+ cssclass: 'tinyeditor',
+ controlclass: 'tinyeditor-control',
+ rowclass: 'tinyeditor-header',
+ dividerclass: 'tinyeditor-divider',
+ controls: ['bold', 'italic', '|',
+ 'orderedlist', 'unorderedlist', '|', 'outdent', 'indent', '|', 'unformat'
+ ]
+ });
+ 
+$(this).parents('form').find('.bt').click(function () {
+ editorId.post();
+ });
+ 
+// make component responsive
+$(this).parents('.tinyeditor').width(editorWidth+'%')
+                .find('iframe').width('100%');
+ })
+ }
+ }
+    
+  </script>
 </head>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">

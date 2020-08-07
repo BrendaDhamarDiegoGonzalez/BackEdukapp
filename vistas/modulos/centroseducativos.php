@@ -1,4 +1,3 @@
-
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
     <div class="col-12"><!-- Titulo -->
@@ -56,13 +55,13 @@
           ?>
           
           <td class="text-center">
-              <button type="button" class="btn btn-success"><a class="text-light" href="<?php echo $url."eliminar/".$id_centro?>"><i class="fas fa-toggle-on"></i></a></button>
+              <span class="badge badge-success"><i class="fas fa-toggle-on"></i></span>
           </td>
           <?php
           }else {
           ?>
           <td class="text-center">
-              <button type="button" class="btn btn-warning"><a class="text-light" href="<?php echo $url."eliminar/".$id_centro?>"><i class="fas fa-toggle-off"></i></a></button>
+              <span class="badge badge-warning"><i class="fas fa-toggle-off"></i></span>
           </td>
           <?php
           }

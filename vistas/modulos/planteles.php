@@ -10,6 +10,12 @@ $cveCentro = $ruta[1];
 $nomPlan=ControladorConsultas::ctrNomCentro($cveCentro);
 $planteles=ControladorConsultas::ctrPlanteles($cveCentro);
 
+foreach ($planteles as $key => $mostrar) {
+                      $id_Plantel=$mostrar['cve_Plantel'];
+                      $plan=$mostrar['Nombre_Plantel'];
+                      $status=$mostrar['Status'];
+                      }
+
 
 foreach ($nomPlan as $key => $mostrar) {
    $cen=$mostrar['Nombre_Ctro_Educativo'];
@@ -18,6 +24,19 @@ foreach ($nomPlan as $key => $mostrar) {
    }
 
 ?>
+<script type="text/javascript">
+function alerta()
+    {
+    var mensaje;
+    var opcion = confirm("¿Modificar Status?");
+    if (opcion == true) {
+      window.location.href="<?php echo $url."eliminarPlan/".$id_Plantel?>" 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+}
+</script>
 <div class="content-wrapper">
   <div class="content-header">
       <div class="container-fluid">
@@ -82,20 +101,16 @@ foreach ($nomPlan as $key => $mostrar) {
                         if ($status==1) {  
                        ?>
                       <td class="text-center">
-                        <button type="button" class="btn btn-success">
-                          <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
+                        <button onclick="alerta()" type="button" class="btn btn-success">
                             <i class="fas fa-toggle-on"></i>
-                          </a>
                         </button>
                       </td>
                       <?php 
                         }else {   
                        ?>
                        <td class="text-center">
-                        <button type="button" class="btn btn-warning">
-                          <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
+                        <button onclick="alerta()" type="button" class="btn btn-warning">
                             <i class="fas fa-toggle-off"></i>
-                          </a>
                         </button>
                        </td>
                        <?php 
@@ -184,5 +199,5 @@ foreach ($nomPlan as $key => $mostrar) {
             </div>
             <!-- /.card -->
           </div>
-
   </div>
+ 

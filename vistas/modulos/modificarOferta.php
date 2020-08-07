@@ -104,60 +104,38 @@ $status=$mostrar['Status'];
 							<div class="form-group">
 								<label for="formGroupExampleInput2">Escoge los opcionales que se mostraran en la oferta educativa, para solicitar información:</label>
 								<br>
-								
-									<input name="chekSexo" type="checkbox" id="chekSexo" value="1">
-									Sexo : M / F
-								
+								<input name="chekSexo" type="checkbox" id="chekSexo" value="1">
+								Sexo : M / F
 								<br>
-								
-									<input name="chekPrograma" type="checkbox" id="chekPrograma" value="2">
-									¿Cuándo deseas iniciar el programa? De inmediato / Dentro de 1 a 3 meses / En 3 meses o despúes.
-								
+								<input name="chekPrograma" type="checkbox" id="chekPrograma" value="2">
+								¿Cuándo deseas iniciar el programa? De inmediato / Dentro de 1 a 3 meses / En 3 meses o despúes.
 								<br>
-								
-									<input name="chekEdad" type="checkbox" id="chekEdad" value="3">
-									Edad
-								
+								<input name="chekEdad" type="checkbox" id="chekEdad" value="3">
+								Edad
 								<br>
-								
-									<input name="chekFecha" type="checkbox" id="chekFecha" value="4">
-									Fecha de nacimiento
-								
+								<input name="chekFecha" type="checkbox" id="chekFecha" value="4">
+								Fecha de nacimiento
 								<br>
-								
-									<input name="chekNivel" type="checkbox" id="chekNivel" value="5">
-									Nivel máximo de estudios: Certificado de preparatoria / Título de Licenciatura / Título de Maestría / Otro
-								
+								<input name="chekNivel" type="checkbox" id="chekNivel" value="5">
+								Nivel máximo de estudios: Certificado de preparatoria / Título de Licenciatura / Título de Maestría / Otro
 								<br>
-								
-									<input name="chekSegmentacion" type="checkbox" id="chekSegmentacion" value="6">
-									Segmentación por municipios
-								
+								<input name="chekSegmentacion" type="checkbox" id="chekSegmentacion" value="6">
+								Segmentación por municipios
 								<br>
-								
-									<input name="chekCP" type="checkbox" id="chekCP" value="7">
-									Código Postal
-								
+								<input name="chekCP" type="checkbox" id="chekCP" value="7">
+								Código Postal
 								<br>
-								
-									<input name="chekLic" type="checkbox" id="chekLic" value="8">
-									Licenciado: SI / NO
-								
+								<input name="chekLic" type="checkbox" id="chekLic" value="8">
+								Licenciado: SI / NO
 								<br>
-								
-									<input name="chekNuevo" type="checkbox" id="chekNuevo" value="9">
-									¿Nuevo ingreso o revalidación? : Nuevo Ingreso / Revalidación
-								
+								<input name="chekNuevo" type="checkbox" id="chekNuevo" value="9">
+								¿Nuevo ingreso o revalidación? : Nuevo Ingreso / Revalidación
 								<br>
-								
-									<input name="chekHorario" type="checkbox" id="chekHorario" value="10">
-									Horario para contactar
-								
+								<input name="chekHorario" type="checkbox" id="chekHorario" value="10">
+								Horario para contactar
 								<br>
-								
-									<input name="chekForma" type="checkbox" id="chekForma" value="11">
-									Forma de contacto
-								
+								<input name="chekForma" type="checkbox" id="chekForma" value="11">
+								Forma de contacto
 								<br>
 								<input class=" btn btn-primary mt-3" type="submit" value="Guardar" >
 								<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3 mt-3">

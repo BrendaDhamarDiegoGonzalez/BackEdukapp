@@ -199,7 +199,8 @@ class ModeloConsulta{
 											//							CRUD PARA PLANTELES			  //
 	//********************************************************//
 	static public function mdlBuscarPlantel($nombre,$cve){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM plantel WHERE Nombre_Plantel= :Nombre AND cve_Ctro_Educativo= :Cve");
+		$nombre = '%'.$nombre.'%';
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM plantel WHERE Nombre_Plantel LIKE :Nombre AND cve_Ctro_Educativo= :Cve");
 		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
 		$consulta->bindParam(":Cve", $cve, PDO::PARAM_INT);
 		$consulta -> execute();
@@ -398,7 +399,7 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
-	//Planteles de oferta********************************************************************
+	//Planteles de oferta
 	static public function mdlPlantelesOferta($cveOferta){
 		$consulta=Conexion::conectar()->prepare("SELECT plantel.cve_Plantel,Nombre_Plantel FROM plantel INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel WHERE oferta_plantel.cve_OfertaEdu=$cveOferta AND plantel.Status=1");
 		$consulta -> execute();
