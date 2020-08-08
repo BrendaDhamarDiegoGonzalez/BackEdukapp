@@ -7,14 +7,25 @@ $cveOferta = $ruta[1];
 }
 $mod=ModeloConsulta::mdlMostrarOfertaForm($cveOferta);
 foreach ($mod as $key => $mostrar) {
+$cveCentro=$mostrar['cve_Ctro_Educativo'];
 $centro=$mostrar['Nombre_Ctro_Educativo'];
 $oferta=$mostrar['Nombre'];
 $costo=$mostrar['Costo'];
 $dura=$mostrar['Duracion'];
 $desc=$mostrar['Descripcion'];
-$nivel=$mostrar['NombreNivel'];
-$moda=$mostrar['Modalidad'];
+$nivel=$mostrar['cve_Nivel'];
+$moda=$mostrar['Cve_Modalidad'];
 $status=$mostrar['Status'];
+$subcategoria=$mostrar['id_subcategoria'];
+$categoria=$mostrar['descripcion_cat'];
+}
+$planOfertas=ModeloConsulta::mdlPlantelesOferta2($cveOferta);
+foreach ($planOfertas as $key => $value) {
+	$idPlantel=$value['cve_Plantel'];
+}
+$opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
+foreach ($opcOfertas as $key => $value) {
+	$cv_Opc=$value['cve_Opcional'];
 }
 ?>
 <div class="content-wrapper">
@@ -28,7 +39,8 @@ $status=$mostrar['Status'];
 					<form method="post"  action="<?php echo $url."modificar2/".$cveOferta?>" class="px-5 py-3">
 						<div class="form-group">
 							<label for="formGroupExampleInput">Nombre del Centro Educativo</label>
-							<input type="text" readonly class="form-control" id="nombreCentro" name="nombreCentro" value="<?php echo $centro ?>">
+							<p><?php echo $centro ?></p>
+							
 						</div>
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Oferta</label><br>
@@ -36,12 +48,11 @@ $status=$mostrar['Status'];
 						</div>
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Costo</label>
-							<input required="" type="text" class="form-control" id="costo" name="costo" value="<?php echo $costo ?>" placeholder="Costo">
-						</div>
-						<div class="form-group">
+							<input required="" type="text" class="d-inline mx-4" id="costo" name="costo" value="<?php echo $costo ?>" placeholder="Costo">
 							<label for="formGroupExampleInput2">Duración</label>
-							<input required="" type="text" class="form-control" id="duracion" name="duracion" value="<?php echo $dura ?>" placeholder="Duracion">
+							<input required="" type="text" class="d-inline" id="duracion" name="duracion" value="<?php echo $dura ?>" placeholder="Duracion">
 						</div>
+						
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Descripción</label><br>
 							<textarea class="form-control text-justify" id="desc" name="desc">
@@ -49,96 +60,149 @@ $status=$mostrar['Status'];
 							</textarea>
 						</div>
 						<div class="form-group">
-							<label for="formGroupExampleInput2">Nivel</label>
-							<select class="custom-select" id="nivel" name="nivel" >
-								<option selected="">Seleccione una opción</option>
-								<option value="1">Licenciaturas</option>
-								<option value="2">Maestrías</option>
-								<option value="3">Posgrados</option>
-								<option value="4">Diplomados</option>
-								<option value="5">Cursos</option>
-								<option value="6">Carreras Técnicas</option>
-								<option value="7">Programas en línea</option>
-								<option value="8">Preparatoria</option>
+							<label for="formGroupExampleInput2">Nivel </label>
+							<?php $niveles = ModeloConsulta::mdlMostrarNiveles(); ?>
+							<select class="custom-select" id="nivel" name="nivel"  >
+								<?php
+								if (count($niveles) > 0)
+								{
+								foreach ($niveles as $key => $value) {
+								$idniv = $value["cve_Nivel"];
+								$nomniv = $value["NombreNivel"];?>
+								<option value="<?php echo $idniv; ?>"
+									<?php if ($nivel==$idniv) {
+										echo "selected";
+									} ?>
+								><?php echo $nomniv; ?></option>
+								<?php
+								}
+								}
+								?>
 							</select>
 						</div>
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Modalidad</label>
+							<?php $modalidades = ModeloConsulta::mdlMostrarModalidades(); ?>
 							<select class="custom-select" id="mod" name="mod" >
-								<option selected="">Seleccione una opción</option>
-								<option value="1">En línea y presencial</option>
-								<option value="2">En línea</option>
-								<option value="3">Presencial</option>
-								<option value="4">Semipresencial</option>
+								<?php
+								if (count($modalidades) > 0)
+								{
+								foreach ($modalidades as $key => $value) {
+								$idmod = $value["Cve_Modalidad"];
+								$nomod = $value["Modalidad"];?>
+								<option value="<?php echo $idmod; ?>"
+									<?php if ($moda==$idmod) {
+										echo "selected";
+									} ?>
+								><?php echo $nomod; ?></option>
+								<?php
+								}
+								}
+								?>
 							</select>
 						</div>
+						<div class="form-group">
+							<label for="formGroupExampleInput2">Categoria</label>
+							<p><?php echo $categoria; ?></p>
+						</div>
+						<!--
+						<div class="form-group">
+							<label for="formGroupExampleInput2">Categoria</label>
+							<?php $cat = ModeloConsulta::mdlMostrarCategorias(); ?>
+							<select name="cate" id="cate" class="form-control">
+								<?php
+								if (count($cat) > 0)
+								{
+								foreach ($cat as $key => $value) {
+								$idcat = $value["id_categoria"];
+								$nomCat = $value["descripcion_cat"];?>
+								<option value="<?php echo $idcat; ?>"
+									<?php if ($categoria==$idcat) {
+										echo "selected";
+									} ?>
+								><?php echo $nomCat; ?></option>
+								<?php
+								}
+								}
+								?>
+							</select>
+						</div>
+					-->
+						<div class="form-group">
+							<label for="formGroupExampleInput2">Subcategoria</label>
+							<?php $subcat = ModeloConsulta::mdlMostrarSubcategorias(); ?>
+							<select name="subcate" id="subcate" class="form-control">
+								<?php
+								if (count($subcat) > 0)
+								{
+								foreach ($subcat as $key => $value) {
+								$idsubcat = $value["id_subcategoria"];
+								$nomSubCat = $value["descripcion_subcat"];?>
+								<option value="<?php echo $idsubcat; ?>"
+									<?php if ($subcategoria==$idsubcat) {
+										echo "selected";
+									} ?>
+								><?php echo $nomSubCat; ?></option>
+								<?php
+								}
+								}
+								?>
+							</select>
+						</div>
+						
 						<?php
 							if ($status!=1) {
 						?>
 						<div class="form-group">
-							<input class="form-check-input" type="radio" name="status" id="status" value="1" required="">
+							<input class="form-check-input" type="radio" name="status" id="status" value="1" >
 							<label for="formGroupExampleInput2">Aprobar Oferta</label>
 						</div>
 						<?php }else{ ?>
 						<div class="form-group">
-							<input class="form-check-input" type="radio" name="status" id="status" value="0" required="">
+							<input class="form-check-input" type="radio" name="status" id="status" value="0" >
 							<label for="formGroupExampleInput2">Deshabilitar Oferta</label>
 						</div>
 						<?php }  ?>
+						<!--Planteles-->
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Planteles</label>
 							<div class="form-check">
-								<?php $planteles = ModeloConsulta::mdlPlantelesOferta($cveOferta); ?>
-								<?php
+								<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); 
 								if (count($planteles) > 0)
 								{
 								foreach ($planteles as $key => $value) {
 								$idplan = $value["cve_Plantel"];
 								$nomplan = $value["Nombre_Plantel"];?>
-								<input class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"><?php echo $nomplan; ?></input><br>
+
+								<input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"
+								<?php if ($idplan==$idPlantel) {echo "checked";} ?>><?php echo $nomplan; ?></input><br>
 								<?php
 								}
 								}
 								?>
 							</div>
+						</div>
+							<!--Opcionales-->
 							<div class="form-group">
 								<label for="formGroupExampleInput2">Escoge los opcionales que se mostraran en la oferta educativa, para solicitar información:</label>
-								<br>
-								<input name="chekSexo" type="checkbox" id="chekSexo" value="1">
-								Sexo : M / F
-								<br>
-								<input name="chekPrograma" type="checkbox" id="chekPrograma" value="2">
-								¿Cuándo deseas iniciar el programa? De inmediato / Dentro de 1 a 3 meses / En 3 meses o despúes.
-								<br>
-								<input name="chekEdad" type="checkbox" id="chekEdad" value="3">
-								Edad
-								<br>
-								<input name="chekFecha" type="checkbox" id="chekFecha" value="4">
-								Fecha de nacimiento
-								<br>
-								<input name="chekNivel" type="checkbox" id="chekNivel" value="5">
-								Nivel máximo de estudios: Certificado de preparatoria / Título de Licenciatura / Título de Maestría / Otro
-								<br>
-								<input name="chekSegmentacion" type="checkbox" id="chekSegmentacion" value="6">
-								Segmentación por municipios
-								<br>
-								<input name="chekCP" type="checkbox" id="chekCP" value="7">
-								Código Postal
-								<br>
-								<input name="chekLic" type="checkbox" id="chekLic" value="8">
-								Licenciado: SI / NO
-								<br>
-								<input name="chekNuevo" type="checkbox" id="chekNuevo" value="9">
-								¿Nuevo ingreso o revalidación? : Nuevo Ingreso / Revalidación
-								<br>
-								<input name="chekHorario" type="checkbox" id="chekHorario" value="10">
-								Horario para contactar
-								<br>
-								<input name="chekForma" type="checkbox" id="chekForma" value="11">
-								Forma de contacto
-								<br>
-								<input class=" btn btn-primary mt-3" type="submit" value="Guardar" >
-								<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3 mt-3">
+								<div class="form-check">
+								<?php $opciones = ModeloConsulta::mdlMostrarOpcionales(); ?>
+								<?php
+								if (count($opciones) > 0)
+								{
+								foreach ($opciones as $key => $value) {
+								$idop = $value["cve_opcional"];
+								$nomop = $value["descripcion"];?>
+
+								<input name="opcionales[]" class="form-check-input position-static" value="<?php echo $idop; ?>" type="checkbox"
+								<?php if ($idop==$cv_Opc) {echo "checked";} ?>><?php echo $nomop; ?></input><br>
+								<?php
+								}
+								}
+								?>
+							</div>
+							</div>
+							<input class=" btn btn-primary" type="submit" value="Guardar" >
 							</form>
 						</div>
 					</div>

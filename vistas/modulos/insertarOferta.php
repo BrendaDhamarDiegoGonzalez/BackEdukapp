@@ -1,38 +1,18 @@
 <head>
-  <link rel="stylesheet" href="../TinyEditor-master/style.css" />
-  <script type="text/javascript" src="../TinyEditor-master/tinyeditor.js"></script>
-  <script type="text/javascript">
-    function tinyEditor () {
- var textarea = $('.tinyEditor');
- 
-if (textarea.size()) {
- textarea.each(function () {
- var editorWidth = $(this).outerWidth(true) * 100 / $(this).parent().outerWidth(true),
-     editorId = 'editor'+$(this).attr('id');
- 
-editorId = new TINY.editor.edit(editorId, {
- id: $(this).attr('id'),
- cssclass: 'tinyeditor',
- controlclass: 'tinyeditor-control',
- rowclass: 'tinyeditor-header',
- dividerclass: 'tinyeditor-divider',
- controls: ['bold', 'italic', '|',
- 'orderedlist', 'unorderedlist', '|', 'outdent', 'indent', '|', 'unformat'
- ]
- });
- 
-$(this).parents('form').find('.bt').click(function () {
- editorId.post();
- });
- 
-// make component responsive
-$(this).parents('.tinyeditor').width(editorWidth+'%')
-                .find('iframe').width('100%');
- })
- }
- }
-    
-  </script>
+  <script type="text/javascript" src="../plugins/editor/js/editor.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../plugins/editor/css/editor.css">
+<script type="text/javascript">
+$(document).ready(function(){
+$('#ofertaHtml').Editor();
+
+$('#btn-enviar').click(function(e){
+e.preventDefault();
+$('#ofertaHtml').text($('#ofertaHtml').Editor('getText'));
+$('#frm-test').submit();
+});
+});
+</script>
 </head>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
@@ -42,7 +22,7 @@ $(this).parents('.tinyeditor').width(editorWidth+'%')
     <div class="card p-5">
       <div class="card-body p-0">
         <div class="">
-          <form method="post"  action="<?php echo $url."registro"?>" enctype="multipart/form-data">
+          <form method="post"  action="<?php echo $url."registro"?>" enctype="multipart/form-data" id="frm-test" name="frm-test" >
             <div class="form-group">
               <label for="formGroupExampleInput">Nombre(s)</label>
               <input type="text" class="form-control" id="nombreUsu" name="nombreOfe" placeholder="Nombre(s)">
@@ -75,75 +55,53 @@ $(this).parents('.tinyeditor').width(editorWidth+'%')
             </div>
             <div class="form-group">
               <label for="formGroupExampleInput2">Oferta</label>
-              <textarea id="ofertaHtml" style="width:400px; height:200px"></textarea>
-              <script type="text/javascript">
-              new TINY.editor.edit('editor',{
-              id:'ofertaHtml',
-              width:584,
-              height:175,
-              cssclass:'te',
-              controlclass:'tecontrol',
-              rowclass:'teheader',
-              dividerclass:'tedivider',
-              controls:['bold','italic','underline','strikethrough','|','subscript','superscript','|',
-              'orderedlist','unorderedlist','|','outdent','indent','|','leftalign',
-              'centeralign','rightalign','blockjustify','|','unformat','|','undo','redo','n',
-              'font','size','style','|','image','hr','link','unlink','|','cut','copy','paste','print'],
-              footer:true,
-              fonts:['Verdana','Arial','Georgia','Trebuchet MS'],
-              xhtml:true,
-              cssfile:'style.css',
-              bodyid:'editor',
-              footerclass:'tefooter',
-              toggle:{text:'show source',activetext:'show wysiwyg',cssclass:'toggle'},
-              resize:{cssclass:'resize'}
-              });
-              </script>
+              <textarea id="ofertaHtml" name="ofertaHtml"></textarea>
             </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">Costo por periodo</label>
-              <input type="text" class="form-control" id="costoPeri" name="costoPeri" placeholder="Costo por periodo">
-            </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">Categoria</label>
-              <?php $subcat = ModeloConsulta::mdlMostrarSubcategorias(); ?>
-              <select name="cate" id="cate" class="form-control">
-                <?php
-                if (count($subcat) > 0)
-                {
-                foreach ($subcat as $key => $value) {
-                $idsubcat = $value["id_subcategoria"];
-                $nomCat = $value["descripcion_subcat"];?>
-                <option value="<?php echo $idsubcat; ?>"><?php echo $nomCat; ?></option>
-                <?php
-                }
-                }
-                ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">PDF</label>
-              <input type="file" class="form-control-file" id="nomPdf" name="nomPdf">
-            </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">Modalidad</label>
-              <select class="browser-default custom-select " name="moda">
-                <option selected>Seleccione</option>
-                <option value="1">En línea y presencial</option>
-                <option value="2">En línea</option>
-                <option value="3">Presencial</option>
-                <option value="4">Semipresencial</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="formGroupExampleInput2">Promocional</label>
-              <input type="text" class="form-control" id="promo" name="promo" placeholder="Promoción">
-            </div>
-            <input class=" btn btn-primary" type="submit"  value="Guardar" >
-          </form>
-        </div>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Costo por periodo</label>
+            <input type="text" class="form-control" id="costoPeri" name="costoPeri" placeholder="Costo por periodo">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Subcategoria</label>
+            <?php $subcat = ModeloConsulta::mdlMostrarSubcategorias(); ?>
+            <select name="cate" id="cate" class="form-control">
+              <?php
+              if (count($subcat) > 0)
+              {
+              foreach ($subcat as $key => $value) {
+              $idsubcat = $value["id_subcategoria"];
+              $nomCat = $value["descripcion_subcat"];?>
+              <option value="<?php echo $idsubcat; ?>"><?php echo $nomCat; ?></option>
+              <?php
+              }
+              }
+              ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">PDF</label>
+            <input type="file" class="form-control-file" id="nomPdf" name="nomPdf">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Modalidad</label>
+            <select class="browser-default custom-select " name="moda">
+              <option selected>Seleccione</option>
+              <option value="1">En línea y presencial</option>
+              <option value="2">En línea</option>
+              <option value="3">Presencial</option>
+              <option value="4">Semipresencial</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">Promocional</label>
+            <input type="text" class="form-control" id="promo" name="promo" placeholder="Promoción">
+          </div>
+          <input class=" btn btn-primary" type="submit"  value="Guardar" id="btn-enviar" >
+        </form>
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>

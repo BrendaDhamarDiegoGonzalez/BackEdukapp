@@ -11,14 +11,54 @@ class ModeloConsulta{
 		$stmt2 -> execute();
 		return $stmt2 -> fetch();
 	}
+	//Para tabla Centros
+	static public function mdlMostrarCentros(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Centros educativos hoy
+	static public function mdlCenhoy($hoy){
+		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM ctro_educativo WHERE Fecha_Registro>='$hoy'");
+		$stmt -> execute();
+		
+		return $stmt -> fetch();
+	}
+	//Para formulario modificar Centros/ Mostrar datos de un centro
+	static public function mdlMostrarCentrosForm($cveCentro){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE cve_Ctro_Educativo = :id");
+		$consulta -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+
 	static public function mdlConsultaOfertas(){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM oferta_edu WHERE STATUS='0'");
 		$stmt -> execute();
 		return $stmt -> fetch();
 	}
-	//Para tabla Centros
-	static public function mdlMostrarCentros(){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo");
+	
+	//Para mostrar modalidades
+	static public function mdlMostrarModalidades(){
+		$consulta = Conexion::conectar()->prepare("SELECT Cve_Modalidad, Modalidad FROM catmodalidad");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Para mostrar niveles
+	static public function mdlMostrarNiveles(){
+		$consulta = Conexion::conectar()->prepare("SELECT cve_Nivel,NombreNivel FROM nivel");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Para mostrar categorias
+	static public function mdlMostrarCategorias(){
+		$consulta = Conexion::conectar()->prepare("SELECT id_categoria, descripcion_cat FROM categorias");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Para mostrar opcionales
+	static public function mdlMostrarOpcionales(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM opcional");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
@@ -75,20 +115,7 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
-	//Centros educativos hoy
-	static public function mdlCenhoy($hoy){
-		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM ctro_educativo WHERE Fecha_Registro>='$hoy'");
-		$stmt -> execute();
-		
-		return $stmt -> fetch();
-	}
-	//Para formulario modificar Centros/ Mostrar datos de un centro
-	static public function mdlMostrarCentrosForm($cveCentro){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE cve_Ctro_Educativo = :id");
-		$consulta -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
+	
 	//Para formulario modificar Planteles
 	static public function mdlMostrarPlantelForm($cvePlantel){
 		$consulta = Conexion::conectar()->prepare("SELECT * FROM plantel WHERE cve_Plantel = :id");
@@ -104,7 +131,7 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 	}
 	//********************************************************//
-											//							CRUD PARA CENTROS			  //
+	//							CRUD PARA CENTROS			  //
 	//********************************************************//
 	//Ingresar
 	static public function mdlIngresarCentro($datos){
@@ -329,20 +356,20 @@ class ModeloConsulta{
 	//*****************************OFERTAS************************************
 	//Para formulario modificar oferta
 	static public function mdlMostrarOfertaForm($cveOferta){
-		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,oferta_edu.Costo, oferta_edu.Duracion, oferta_edu.Descripcion, oferta_edu.Status, NombreNivel,Modalidad
+		$consulta = Conexion::conectar()->prepare("SELECT ctro_educativo.cve_Ctro_Educativo,Nombre_Ctro_Educativo, Nombre,oferta_edu.Costo, oferta_edu.Duracion, oferta_edu.Descripcion, oferta_edu.Status,cve_Nivel,Cve_Modalidad,categorias.id_categoria, descripcion_cat,subcategoria.id_subcategoria
 			FROM ctro_educativo
 			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
 			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
 			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
-			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
-			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
-			WHERE oferta_edu.cve_OfertaEdu =:id");
+			INNER JOIN subcategoria ON oferta_edu.id_subcategoria=subcategoria.id_subcategoria
+			INNER JOIN categorias ON subcategoria.id_categoria=categorias.id_categoria
+			WHERE oferta_edu.cve_OfertaEdu=:id");
 		$consulta -> bindParam(":id", $cveOferta, PDO::PARAM_INT);
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
 	static public function mdlEditarOferta($datosof){
-		$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Nombre=:Oferta, Costo=:Costo, Duracion=:Durac, Descripcion=:Descr, cve_Nivel=:Nivel, Cve_Modalidad=:Mod, Status = :Status, FechaActualizacion= NOW() WHERE cve_OfertaEdu = :Id");
+		$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Nombre=:Oferta, Costo=:Costo, Duracion=:Durac, Descripcion=:Descr, cve_Nivel=:Nivel, Cve_Modalidad=:Mod, Status = :Status,id_subcategoria=:Subcat, FechaActualizacion= NOW() WHERE cve_OfertaEdu = :Id");
 		
 		//$stmt->bindParam(":NomCen", $datosof["nombreCentro"], PDO::PARAM_STR);
 		$stmt->bindParam(":Oferta", $datosof["oferta"], PDO::PARAM_STR);
@@ -352,6 +379,7 @@ class ModeloConsulta{
 		$stmt->bindParam(":Nivel", $datosof["nivel"], PDO::PARAM_INT);
 		$stmt->bindParam(":Mod", $datosof["mod"], PDO::PARAM_INT);
 		$stmt->bindParam(":Status", $datosof["status"], PDO::PARAM_INT);
+		$stmt->bindParam(":Subcat", $datosof["subcate"], PDO::PARAM_INT);
 		$stmt->bindParam(":Id", $datosof["idOferta"], PDO::PARAM_INT);
 		if($stmt->execute()){
 			return "ok";
@@ -428,6 +456,18 @@ class ModeloConsulta{
 		}
 		//$stmt->close();
 		$stmt = null;
+	}
+	//Para mostrar Planteles de Oferta
+	static public function mdlPlantelesOferta2($cveOferta){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Para mostrar Opcionales de Oferta
+	static public function mdlOpcionalesOferta($cveOferta){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM opcionales_oferta__plantel WHERE cve_OfertaEdu=$cveOferta");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
 	}
 	//*****************************************************************
 									//								REPORTES

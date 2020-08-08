@@ -159,11 +159,10 @@ if($respuesta == "ok"){
 	}	
 }
 //***********************************************************OFERTAS**********************************************
-if(isset($_POST["nombreCentro"])){
+if(isset($_POST["oferta"])){
 
 
 	$datosof = array(
-	//'nombreCentro'=>$_POST['nombreCentro'],
 	'oferta'=>$_POST['oferta'],
 	'costo'=>$_POST['costo'],
 	'duracion'=>$_POST['duracion'],
@@ -171,10 +170,16 @@ if(isset($_POST["nombreCentro"])){
 	'nivel'=>$_POST['nivel'],
 	'mod'=>$_POST['mod'],
 	'status' => $_POST['status'],
+	'subcate' => $_POST['subcate'],
+	//'cate' => $_POST['cate'],
+	'planteles' => $_POST['planteles'],
+	'opcionales' => $_POST['opcionales'],
 	'idOferta'=>$cveOferta
 	);
 
-	//print_r($datosof);
+
+
+	/*print_r($datosof);*/	
 	
 	$respuesta = ModeloConsulta::mdlEditarOferta($datosof);
 
@@ -206,5 +211,5 @@ if($respuesta == "ok"){
 		</div>
 	</div>
 	<?php 
-	}	
+	}
 }

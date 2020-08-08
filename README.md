@@ -28,4 +28,7 @@ Modificaciones en titulos
 ### Versión 9 
 >Cambio de Status en Planteles
 
+### Versión 10 
+>Cambios en modificacion de oferta
+
 Visita ![Edukapp](https://edukapp.com.mx/)
