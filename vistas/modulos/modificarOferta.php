@@ -20,13 +20,7 @@ $subcategoria=$mostrar['id_subcategoria'];
 $categoria=$mostrar['descripcion_cat'];
 }
 $planOfertas=ModeloConsulta::mdlPlantelesOferta2($cveOferta);
-foreach ($planOfertas as $key => $value) {
-	$idPlantel=$value['cve_Plantel'];
-}
 $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
-foreach ($opcOfertas as $key => $value) {
-	$cv_Opc=$value['cve_Opcional'];
-}
 ?>
 <div class="content-wrapper">
 	<div class="content-header align-content-center ">
@@ -107,7 +101,7 @@ foreach ($opcOfertas as $key => $value) {
 						</div>
 						<!--
 						<div class="form-group">
-							<label for="formGroupExampleInput2">Categoria</label>
+										<label for="formGroupExampleInput2">Categoria</label>
 							<?php $cat = ModeloConsulta::mdlMostrarCategorias(); ?>
 							<select name="cate" id="cate" class="form-control">
 								<?php
@@ -127,7 +121,7 @@ foreach ($opcOfertas as $key => $value) {
 								?>
 							</select>
 						</div>
-					-->
+						-->
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Subcategoria</label>
 							<?php $subcat = ModeloConsulta::mdlMostrarSubcategorias(); ?>
@@ -164,28 +158,29 @@ foreach ($opcOfertas as $key => $value) {
 						</div>
 						<?php }  ?>
 						<!--Planteles-->
+						<div class="invisible off"><input type="cveCentro" name="cveCentro" value="<?php echo $cveCentro; ?>"></div>
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Planteles</label>
 							<div class="form-check">
-								<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); 
+								<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro);
 								if (count($planteles) > 0)
 								{
 								foreach ($planteles as $key => $value) {
 								$idplan = $value["cve_Plantel"];
-								$nomplan = $value["Nombre_Plantel"];?>
-
-								<input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"
-								<?php if ($idplan==$idPlantel) {echo "checked";} ?>><?php echo $nomplan; ?></input><br>
-								<?php
-								}
-								}
+								$nomplan = $value["Nombre_Plantel"];
 								?>
+								<input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"
+								<?php
+								foreach ($planOfertas as $key => $value) {
+								$idPlantel=$value['cve_Plantel'];
+								if ($idplan==$idPlantel) {echo "checked";}} ?>><?php echo $nomplan;?></input><br>
+								<?php } } ?>
 							</div>
 						</div>
-							<!--Opcionales-->
-							<div class="form-group">
-								<label for="formGroupExampleInput2">Escoge los opcionales que se mostraran en la oferta educativa, para solicitar información:</label>
-								<div class="form-check">
+						<!--Opcionales-->
+						<div class="form-group">
+							<label for="formGroupExampleInput2">Escoge los opcionales que se mostraran en la oferta educativa, para solicitar información:</label>
+							<div class="form-check">
 								<?php $opciones = ModeloConsulta::mdlMostrarOpcionales(); ?>
 								<?php
 								if (count($opciones) > 0)
@@ -193,19 +188,21 @@ foreach ($opcOfertas as $key => $value) {
 								foreach ($opciones as $key => $value) {
 								$idop = $value["cve_opcional"];
 								$nomop = $value["descripcion"];?>
-
 								<input name="opcionales[]" class="form-check-input position-static" value="<?php echo $idop; ?>" type="checkbox"
-								<?php if ($idop==$cv_Opc) {echo "checked";} ?>><?php echo $nomop; ?></input><br>
+								<?php
+								foreach ($opcOfertas as $key => $value) {
+								$cv_Opc=$value['cve_Opcional'];
+								if ($idop==$cv_Opc) {echo "checked";} } ?>><?php echo $nomop; ?></input><br>
 								<?php
 								}
 								}
 								?>
 							</div>
-							</div>
-							<input class=" btn btn-primary" type="submit" value="Guardar" >
-							</form>
 						</div>
-					</div>
+						<input class=" btn btn-primary" type="submit" value="Guardar" >
+					</form>
 				</div>
 			</div>
 		</div>
+	</div>
+</div>

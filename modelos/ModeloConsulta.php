@@ -1,11 +1,13 @@
 <?php
 require_once "conexion.php";
 class ModeloConsulta{
+	//**************************** ASPIRANTES***********************************//
 	static public function mdlConsultaBD(){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) from aspirante");
 		$stmt -> execute();
 		return $stmt -> fetch();
 	}
+	//***************************CENTROS***************************************//
 	static public function mdlConsultaCentros(){
 		$stmt2 = Conexion::conectar()->prepare("SELECT COUNT(*) from ctro_educativo");
 		$stmt2 -> execute();
@@ -31,13 +33,45 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
-
+//*************************************************OFERTAS************************************************************//
 	static public function mdlConsultaOfertas(){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM oferta_edu WHERE STATUS='0'");
 		$stmt -> execute();
 		return $stmt -> fetch();
 	}
-	
+	//Para insertar planteles-oferta
+	static public function mdlIngresarPlantelOferta($cveOferta,$cve_plantel){
+		$consulta = Conexion::conectar()->prepare("INSERT INTO oferta_plantel( cve_OfertaEdu ,cve_Plantel) SELECT $cveOferta,$cve_plantel FROM dual WHERE NOT EXISTS (SELECT cve_OfertaEdu ,cve_Plantel FROM oferta_plantel WHERE cve_OfertaEdu = $cveOferta AND cve_Plantel=$cve_plantel ) LIMIT 1");
+		if($consulta->execute()){
+			return "ok";
+		}else{
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		$consulta = null;
+	}
+	//Para insertar opcionales
+	static public function mdlIngresarOpcionales($cveOferta,$cve_plantel,$opcion){
+		$consulta = Conexion::conectar()->prepare("INSERT INTO opcionales_oferta__plantel( cve_Plantel,cve_OfertaEdu,cve_Opcional) SELECT $cveOferta,$cve_plantel,$opcion FROM dual WHERE NOT EXISTS (SELECT cve_Plantel,cve_OfertaEdu,cve_Opcional FROM opcionales_oferta__plantel WHERE cve_OfertaEdu = $cveOferta AND cve_Plantel=$cve_plantel AND cve_Opcional=$opcion) LIMIT 1");
+		if($consulta->execute()){
+			return "ok";
+		}else{
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		$consulta = null;
+	}
+	//Para Eliminar planteles-oferta
+	static public function mdlEliminarPlantelOferta($cveOferta,$cve_plantel){
+		$consulta = Conexion::conectar()->prepare("DELETE FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta AND cve_Plantel=$cve_plantel ");
+		if($consulta->execute()){
+			return "ok";
+		}else{
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		$consulta = null;
+	}
 	//Para mostrar modalidades
 	static public function mdlMostrarModalidades(){
 		$consulta = Conexion::conectar()->prepare("SELECT Cve_Modalidad, Modalidad FROM catmodalidad");
@@ -62,23 +96,9 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
-	//Para tabla Planteles
-	static public function mdlPlanteles($cveCentro){
-		$stmt = Conexion::conectar()->prepare("SELECT PL.cve_Plantel,PL.Nombre_Plantel, PL.`Status`, CE.Nombre_Ctro_Educativo FROM plantel PL INNER JOIN ctro_educativo CE ON PL.cve_Ctro_Educativo = CE.cve_Ctro_Educativo
-			WHERE PL.cve_Ctro_Educativo=$cveCentro");
-		$stmt -> execute();
-		
-		return $stmt -> fetchAll();
-	}
-	//Para tabla Usuarios
-	static public function mdlMostrarUsuarios(){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM usuario");
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
-	//Para tabla Ofertas en revision
+		//Para tabla Ofertas en revision
 	static public function mdlMostrarOrevision(){
-		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
+		$consulta = Conexion::conectar()->prepare("SELECT DISTINCT Nombre_Ctro_Educativo, Nombre,NombreNivel,Modalidad, oferta_edu.cve_OfertaEdu
 			FROM ctro_educativo
 			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
 			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
@@ -115,6 +135,21 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
+	//*************************************************PLANTELES************************************************************//
+	//Para tabla Planteles
+	static public function mdlPlanteles($cveCentro){
+		$stmt = Conexion::conectar()->prepare("SELECT PL.cve_Plantel,PL.Nombre_Plantel, PL.`Status`, CE.Nombre_Ctro_Educativo FROM plantel PL INNER JOIN ctro_educativo CE ON PL.cve_Ctro_Educativo = CE.cve_Ctro_Educativo
+			WHERE PL.cve_Ctro_Educativo=$cveCentro");
+		$stmt -> execute();
+		
+		return $stmt -> fetchAll();
+	}
+	//Para tabla Usuarios
+	static public function mdlMostrarUsuarios(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM usuario");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
 	
 	//Para formulario modificar Planteles
 	static public function mdlMostrarPlantelForm($cvePlantel){
@@ -131,7 +166,7 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 	}
 	//********************************************************//
-	//							CRUD PARA CENTROS			  //
+											//							CRUD PARA CENTROS			  //
 	//********************************************************//
 	//Ingresar
 	static public function mdlIngresarCentro($datos){
@@ -459,18 +494,18 @@ class ModeloConsulta{
 	}
 	//Para mostrar Planteles de Oferta
 	static public function mdlPlantelesOferta2($cveOferta){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta");
+		$consulta = Conexion::conectar()->prepare("SELECT DISTINCT * FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
 	//Para mostrar Opcionales de Oferta
 	static public function mdlOpcionalesOferta($cveOferta){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM opcionales_oferta__plantel WHERE cve_OfertaEdu=$cveOferta");
+		$consulta = Conexion::conectar()->prepare("SELECT DISTINCT * FROM opcionales_oferta__plantel WHERE cve_OfertaEdu=$cveOferta");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
 	//*****************************************************************
-									//								REPORTES
+																	//								REPORTES
 	//*****************************************************************
 	static public function mdlReporteAspirantesHoy($hoy){
 		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta

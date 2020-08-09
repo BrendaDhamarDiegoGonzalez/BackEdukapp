@@ -31,4 +31,7 @@ Modificaciones en titulos
 ### Versión 10 
 >Cambios en modificacion de oferta
 
+### Versión 11 
+>Checkbox para planteles y opcionales en modificar ofertas
+
 Visita ![Edukapp](https://edukapp.com.mx/)
