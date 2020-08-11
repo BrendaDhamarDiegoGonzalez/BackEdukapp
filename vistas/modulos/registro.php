@@ -161,17 +161,23 @@ if(isset($_POST["nombreOfe"])){
 	'promo'=>$_POST['promo']
 	);
 
-	print_r($datos);
-	/*
+	/*print_r($datos);*/	
+	
 	$respuesta = ModeloConsulta::mdlInsertarOferta($datos);
+	$obtenerId=ModeloConsulta::mdlObtenerIdOferta();
+	$cveOferta=$obtenerId[0];
+	$cve_plantel=$_POST['plantel'];
+	$respuesta = ModeloConsulta::mdlIngresarPlantelOferta($cveOferta,$cve_plantel);
+
 
 	//print_r($respuesta);
+	
 	if($respuesta == "ok"){
 	?>
 	<div class="content-wrapper">
 		<div class="content-header align-content-center ">
 			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-				<strong>Usuario Registrado!</strong> Los datos fueron guardados
+				<strong>Oferta Registrada!</strong> Los datos fueron guardados
 			</div>
 			<div class="align-content-center">
 			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."revision"?>" >Aceptar</a></button>
@@ -194,7 +200,7 @@ if(isset($_POST["nombreOfe"])){
 		</div>
 	</div>
 	<?php 
-	}	*/	
+	}
 }
  ?>
 

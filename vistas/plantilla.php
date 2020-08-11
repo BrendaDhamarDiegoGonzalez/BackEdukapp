@@ -35,6 +35,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo $url ?>vistas/plugins/sweetAlert2/sweetalert2.min.css"> 
+    <script src="<?php echo $url ?>vistas/plugins/ckeditor/ckeditor.js"></script>
     
   </head>
 

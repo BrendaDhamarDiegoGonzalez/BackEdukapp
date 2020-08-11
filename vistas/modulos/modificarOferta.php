@@ -15,9 +15,10 @@ $dura=$mostrar['Duracion'];
 $desc=$mostrar['Descripcion'];
 $nivel=$mostrar['cve_Nivel'];
 $moda=$mostrar['Cve_Modalidad'];
-$status=$mostrar['Status'];
+$statusO=$mostrar['Status'];
 $subcategoria=$mostrar['id_subcategoria'];
 $categoria=$mostrar['descripcion_cat'];
+$oferHtml=$mostrar['OfertaHtml'];
 }
 $planOfertas=ModeloConsulta::mdlPlantelesOferta2($cveOferta);
 $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
@@ -37,7 +38,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 							
 						</div>
 						<div class="form-group">
-							<label for="formGroupExampleInput2">Oferta</label><br>
+							<label for="formGroupExampleInput2">Nombre</label><br>
 							<input required="" type="text" class="form-control" id="oferta" name="oferta" value="<?php echo $oferta ?>" placeholder="Oferta">
 						</div>
 						<div class="form-group">
@@ -75,6 +76,13 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 							</select>
 						</div>
 						<div class="form-group">
+							<label for="formGroupExampleInput2">Oferta</label>
+							<textarea id="ofertaHtml" name="ofertaHtml" ><?php echo $oferHtml; ?></textarea>
+							<script>
+							CKEDITOR.replace('ofertaHtml');
+							</script>
+						</div>
+						<div class="form-group">
 							<label for="formGroupExampleInput2">Modalidad</label>
 							<?php $modalidades = ModeloConsulta::mdlMostrarModalidades(); ?>
 							<select class="custom-select" id="mod" name="mod" >
@@ -101,7 +109,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 						</div>
 						<!--
 						<div class="form-group">
-										<label for="formGroupExampleInput2">Categoria</label>
+														<label for="formGroupExampleInput2">Categoria</label>
 							<?php $cat = ModeloConsulta::mdlMostrarCategorias(); ?>
 							<select name="cate" id="cate" class="form-control">
 								<?php
@@ -145,37 +153,74 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 						</div>
 						
 						<?php
-							if ($status!=1) {
+							if ($statusO==0) {
 						?>
 						<div class="form-group">
-							<input class="form-check-input" type="radio" name="status" id="status" value="1" >
+							<input class="form-check-input" type="radio" name="statusOferta" id="statusOferta" value="1" >
 							<label for="formGroupExampleInput2">Aprobar Oferta</label>
 						</div>
-						<?php }else{ ?>
+						<?php }else if($statusO==1){ ?>
 						<div class="form-group">
-							<input class="form-check-input" type="radio" name="status" id="status" value="0" >
+							<input class="form-check-input" type="radio" name="statusOferta" id="statusOferta" value="0" >
 							<label for="formGroupExampleInput2">Deshabilitar Oferta</label>
 						</div>
 						<?php }  ?>
 						<!--Planteles-->
 						<div class="invisible off"><input type="cveCentro" name="cveCentro" value="<?php echo $cveCentro; ?>"></div>
 						<div class="form-group">
-							<label for="formGroupExampleInput2">Planteles</label>
-							<div class="form-check">
-								<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro);
-								if (count($planteles) > 0)
-								{
-								foreach ($planteles as $key => $value) {
-								$idplan = $value["cve_Plantel"];
-								$nomplan = $value["Nombre_Plantel"];
-								?>
-								<input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"
-								<?php
-								foreach ($planOfertas as $key => $value) {
-								$idPlantel=$value['cve_Plantel'];
-								if ($idplan==$idPlantel) {echo "checked";}} ?>><?php echo $nomplan;?></input><br>
-								<?php } } ?>
-							</div>
+							<label for="formGroupExampleInput2">Planteles </label>
+							<table class="table m-0">
+								<thead>
+									<tr>
+										<th class="text-center">Eliminar</th>
+										<th>Plantel</th>
+									</tr>
+									<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); ?>
+								</thead>
+								<tbody>
+									<?php
+									if (count($planteles) > 0)
+										{
+										foreach ($planteles as $key => $value) {
+										$idplan = $value["cve_Plantel"];
+										$nomplan = $value["Nombre_Plantel"];
+										foreach ($planOfertas as $key => $value) {
+										$idPlantel=$value['cve_Plantel'];
+										if ($idplan==$idPlantel) {
+									?>
+									<tr>
+										<td class="text-center"><input name="plantelesElim[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"></input></td>
+										<td><?php echo $nomplan;?></td>
+									</tr>
+									<?php  }}}}?>
+									
+								</tbody>
+							</table>
+							<label for="formGroupExampleInput2">Planteles Disponibles </label>
+							<table class="table m-0">
+								<thead>
+									<tr>
+										<th class="text-center">Agregar</th>
+										<th>Plantel</th>
+									</tr>
+									<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); ?>
+								</thead>
+								<tbody>
+									<?php
+									if (count($planteles) > 0){
+										foreach ($planteles as $key => $value) {
+										$idplan = $value["cve_Plantel"];
+										$nomplan = $value["Nombre_Plantel"];
+									?>
+									<tr>
+										<td class="text-center"><input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"></input></td>
+										<td><?php echo $nomplan;?></td>
+									</tr>
+									<?php  }}?>
+									
+								</tbody>
+							</table>
+							
 						</div>
 						<!--Opcionales-->
 						<div class="form-group">

@@ -141,6 +141,7 @@ if($respuesta == "ok"){
 	}
 }
 //***********************************************************OFERTAS**********************************************
+
 if(isset($_POST["oferta"])){
 $datosof = array(
 'oferta'=>$_POST['oferta'],
@@ -149,34 +150,71 @@ $datosof = array(
 'desc'=>$_POST['desc'],
 'nivel'=>$_POST['nivel'],
 'mod'=>$_POST['mod'],
-'status' => $_POST['status'],
 'subcate' => $_POST['subcate'],
+'oferHtml'=>$_POST['ofertaHtml'],
 //'cate' => $_POST['cate'],
-'planteles' => $_POST['planteles'],
-'opcionales' => $_POST['opcionales'],
+//'planteles' =>$_POST['planteles'], 
+//'plantelesElim' =>$_POST['plantelesElim'],
+//'opcionales' =>$_POST['opcionales'] ,
 'idOferta'=>$cveOferta
 );
+
+if(isset($_POST["statusOferta"])){
+	if ($_POST["statusOferta"]==1) {
+		//print_r("******************************".$_POST["statusOferta"]."Entra a aprobar");
+		$aprobar=ModeloConsulta::mdlAprobarOferta($cveOferta);
+	}else if($_POST["statusOferta"]==0){
+		//print_r("***************************".$_POST["statusOferta"]."Entra a deshabilitar");
+		$aprobar=ModeloConsulta::mdlDeshabilitarOferta($cveOferta);
+	}
+}
+
+if(isset($_POST["plantelesElim"])){
+$planOfertas=ModeloConsulta::mdlPlantelesOferta2($cveOferta);
+if (count($planOfertas) > 0){
+	for($i=0;$i<count($planOfertas);$i++){
+	if (isset($_POST["plantelesElim"][$i]) ){
+	$cve_plantelElim=$_POST["plantelesElim"][$i];
+if ($cve_plantelElim>0) {
+	//print_r($cve_plantelElim."Planteles eliminados");
+	$eliminar=ModeloConsulta::mdlEliminarPlantelOferta($cveOferta,$cve_plantelElim);
+}}}}
+}
+
+if(isset($_POST["planteles"])){
 $cveCentro=$_POST['cveCentro'];
 $planteles = ModeloConsulta::mdlPlanteles($cveCentro);
 
+
 if (count($planteles) > 0){
 for($i=0;$i<count($planteles);$i++){
-	if (isset($datosof['planteles'][$i]) ){
-	$cve_plantel=$datosof['planteles'][$i];
+	if (isset($_POST["planteles"][$i]) ){
+	$cve_plantel=$_POST["planteles"][$i];
 if ($cve_plantel>0) {
 	$insertar= ModeloConsulta::mdlIngresarPlantelOferta($cveOferta,$cve_plantel);
+	//print_r($cve_plantel."Planteles a ingresar");
+	
+}}}}
+}
 
+if(isset($_POST["opcionales"])){
+	$cveCentro=$_POST['cveCentro'];
+$planteles = ModeloConsulta::mdlPlanteles($cveCentro);
+$opciones = ModeloConsulta::mdlMostrarOpcionales();
 
-	$opciones = ModeloConsulta::mdlMostrarOpcionales();
+foreach ($planteles as $key => $value) {
+	$cve_plantel = $value["cve_Plantel"];
 if (count($opciones) > 0){
 for($i=0;$i<count($opciones);$i++){
-	if (isset($datosof['opcionales'][$i]) ){
-	$opcion=$datosof['opcionales'][$i];
+	if (isset($_POST["opcionales"][$i]) ){
+	$opcion=$_POST["opcionales"][$i];
 if ($opcion>0) {
 	$insertarOp= ModeloConsulta::mdlIngresarOpcionales($cveOferta,$cve_plantel,$opcion);
+	//print_r($opcion." Opcionales".$cve_plantel." Plantel".$cveOferta." Oferta");
 }}}}
-
-}}}}
+}}
+//print_r($datosof);
+	
 $respuesta = ModeloConsulta::mdlEditarOferta($datosof);
 if($respuesta == "ok"){
 ?>

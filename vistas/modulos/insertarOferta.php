@@ -1,19 +1,4 @@
-<head>
-  <script type="text/javascript" src="../plugins/editor/js/editor.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="../plugins/editor/css/editor.css">
-<script type="text/javascript">
-$(document).ready(function(){
-$('#ofertaHtml').Editor();
-
-$('#btn-enviar').click(function(e){
-e.preventDefault();
-$('#ofertaHtml').text($('#ofertaHtml').Editor('getText'));
-$('#frm-test').submit();
-});
-});
-</script>
-</head>
+<body>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
     <div class="col-12 py-3"><!-- Titulo -->
@@ -28,6 +13,24 @@ $('#frm-test').submit();
               <input type="text" class="form-control" id="nombreUsu" name="nombreOfe" placeholder="Nombre(s)">
             </div>
             <div class="form-group">
+            <label for="formGroupExampleInput2">Plantel</label>
+            <?php $planteles = ModeloConsulta::mdlMostrarPlantelesOferta(); ?>
+            <select name="plantel" id="plantel" class="form-control">
+              <?php
+              if (count($planteles) > 0)
+              {
+              foreach ($planteles as $key => $value) {
+              $idplan = $value["cve_Plantel"];
+              $nomplan = $value["Nombre_Plantel"];
+              $tipo=$value["Tipo_Plantel"];?>
+              <option value="<?php echo $idplan; ?>"><?php echo $nomplan." (".$tipo.")"; ?></option>
+              <?php
+              }
+              }
+              ?>
+            </select>
+          </div>
+            <div class="form-group">
               <label for="formGroupExampleInput">Costo</label>
               <input type="text" class="form-control" id="costo" name="costo" placeholder="$ 00,000.00 MXN">
             </div>
@@ -41,21 +44,27 @@ $('#frm-test').submit();
             </div>
             <div class="form-group">
               <label for="formGroupExampleInput2">Nivel</label>
-              <select class="browser-default custom-select " name="nivel">
-                <option selected>Seleccione</option>
-                <option value="1">Licenciaturas</option>
-                <option value="2">Maestrías</option>
-                <option value="3">Posgrados</option>
-                <option value="4">Diplomados</option>
-                <option value="5">Cursos</option>
-                <option value="6">Carreras Técnicas</option>
-                <option value="7">Programas en Línea</option>
-                <option value="8">Preparatoria</option>
+              <?php $niveles = ModeloConsulta::mdlMostrarNiveles(); ?>
+              <select class="custom-select" id="nivel" name="nivel"  >
+                <?php
+                if (count($niveles) > 0)
+                {
+                foreach ($niveles as $key => $value) {
+                $idniv = $value["cve_Nivel"];
+                $nomniv = $value["NombreNivel"];?>
+                <option value="<?php echo $idniv; ?>"><?php echo $nomniv; ?></option>
+                <?php
+                }
+                }
+                ?>
               </select>
             </div>
             <div class="form-group">
               <label for="formGroupExampleInput2">Oferta</label>
               <textarea id="ofertaHtml" name="ofertaHtml"></textarea>
+              <script>
+              CKEDITOR.replace('ofertaHtml');
+              </script>
             </div>
           </div>
           <div class="form-group">
@@ -85,13 +94,20 @@ $('#frm-test').submit();
           </div>
           <div class="form-group">
             <label for="formGroupExampleInput2">Modalidad</label>
-            <select class="browser-default custom-select " name="moda">
-              <option selected>Seleccione</option>
-              <option value="1">En línea y presencial</option>
-              <option value="2">En línea</option>
-              <option value="3">Presencial</option>
-              <option value="4">Semipresencial</option>
-            </select>
+            <?php $modalidades = ModeloConsulta::mdlMostrarModalidades(); ?>
+              <select class="custom-select" id="moda" name="moda" >
+                <?php
+                if (count($modalidades) > 0)
+                {
+                foreach ($modalidades as $key => $value) {
+                $idmod = $value["Cve_Modalidad"];
+                $nomod = $value["Modalidad"];?>
+                <option value="<?php echo $idmod; ?>"><?php echo $nomod; ?></option>
+                <?php
+                }
+                }
+                ?>
+              </select>
           </div>
           <div class="form-group">
             <label for="formGroupExampleInput2">Promocional</label>
@@ -105,3 +121,4 @@ $('#frm-test').submit();
 </div>
 </div>
 </div>
+</body>

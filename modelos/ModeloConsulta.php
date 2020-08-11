@@ -52,18 +52,19 @@ class ModeloConsulta{
 	}
 	//Para insertar opcionales
 	static public function mdlIngresarOpcionales($cveOferta,$cve_plantel,$opcion){
-		$consulta = Conexion::conectar()->prepare("INSERT INTO opcionales_oferta__plantel( cve_Plantel,cve_OfertaEdu,cve_Opcional) SELECT $cveOferta,$cve_plantel,$opcion FROM dual WHERE NOT EXISTS (SELECT cve_Plantel,cve_OfertaEdu,cve_Opcional FROM opcionales_oferta__plantel WHERE cve_OfertaEdu = $cveOferta AND cve_Plantel=$cve_plantel AND cve_Opcional=$opcion) LIMIT 1");
+		$consulta = Conexion::conectar()->prepare("INSERT INTO opcionales_oferta__plantel( cve_Plantel,cve_OfertaEdu,cve_Opcional) SELECT $cve_plantel,$cveOferta,$opcion FROM dual WHERE NOT EXISTS (SELECT cve_Plantel,cve_OfertaEdu,cve_Opcional FROM opcionales_oferta__plantel WHERE cve_Plantel=$cve_plantel  AND cve_OfertaEdu = $cveOferta  AND cve_Opcional=$opcion) LIMIT 1");
 		if($consulta->execute()){
 			return "ok";
 		}else{
 			print_r(Conexion::conectar()->errorInfo());
+			print_r("Hubo Problemas jsjsjs");
 		
 		}
 		$consulta = null;
 	}
 	//Para Eliminar planteles-oferta
-	static public function mdlEliminarPlantelOferta($cveOferta,$cve_plantel){
-		$consulta = Conexion::conectar()->prepare("DELETE FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta AND cve_Plantel=$cve_plantel ");
+	static public function mdlEliminarPlantelOferta($cveOferta,$cve_plantelElim){
+		$consulta = Conexion::conectar()->prepare("DELETE FROM oferta_plantel WHERE cve_OfertaEdu=$cveOferta AND cve_Plantel=$cve_plantelElim ");
 		if($consulta->execute()){
 			return "ok";
 		}else{
@@ -105,7 +106,7 @@ class ModeloConsulta{
 			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
 			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
 			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
-			WHERE oferta_edu.Status ='0'");
+			WHERE oferta_edu.Status ='0' ORDER BY oferta_edu.cve_OfertaEdu");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
@@ -118,7 +119,7 @@ class ModeloConsulta{
 			INNER JOIN oferta_edu ON oferta_plantel.cve_OfertaEdu = oferta_edu.cve_OfertaEdu
 			INNER JOIN nivel ON oferta_edu.cve_Nivel = nivel.cve_Nivel
 			INNER JOIN catmodalidad ON oferta_edu.Cve_Modalidad = catmodalidad.Cve_Modalidad
-			WHERE oferta_edu.Status ='1'");
+			WHERE oferta_edu.Status ='1' ORDER BY oferta_edu.cve_OfertaEdu");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
@@ -135,6 +136,31 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
+	//Aprobar Oferta
+	static public function mdlAprobarOferta($cveOferta){
+					$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Status=1 WHERE  cve_OfertaEdu=:id");
+					$stmt -> bindParam(":id", $cveOferta, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+	//Deshabilitar Oferta
+	static public function mdlDeshabilitarOferta($cveOferta){
+					$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Status=0 WHERE  cve_OfertaEdu=:id");
+					$stmt -> bindParam(":id", $cveOferta, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+
 	//*************************************************PLANTELES************************************************************//
 	//Para tabla Planteles
 	static public function mdlPlanteles($cveCentro){
@@ -391,7 +417,7 @@ class ModeloConsulta{
 	//*****************************OFERTAS************************************
 	//Para formulario modificar oferta
 	static public function mdlMostrarOfertaForm($cveOferta){
-		$consulta = Conexion::conectar()->prepare("SELECT ctro_educativo.cve_Ctro_Educativo,Nombre_Ctro_Educativo, Nombre,oferta_edu.Costo, oferta_edu.Duracion, oferta_edu.Descripcion, oferta_edu.Status,cve_Nivel,Cve_Modalidad,categorias.id_categoria, descripcion_cat,subcategoria.id_subcategoria
+		$consulta = Conexion::conectar()->prepare("SELECT ctro_educativo.cve_Ctro_Educativo,Nombre_Ctro_Educativo, Nombre,oferta_edu.Costo, oferta_edu.Duracion, oferta_edu.Descripcion, oferta_edu.Status,oferta_edu.OfertaHtml,cve_Nivel,Cve_Modalidad,categorias.id_categoria, descripcion_cat,subcategoria.id_subcategoria
 			FROM ctro_educativo
 			INNER JOIN plantel ON ctro_educativo.cve_Ctro_Educativo = plantel.cve_Ctro_Educativo
 			INNER JOIN oferta_plantel ON plantel.cve_Plantel = oferta_plantel.cve_Plantel
@@ -404,7 +430,7 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 	}
 	static public function mdlEditarOferta($datosof){
-		$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Nombre=:Oferta, Costo=:Costo, Duracion=:Durac, Descripcion=:Descr, cve_Nivel=:Nivel, Cve_Modalidad=:Mod, Status = :Status,id_subcategoria=:Subcat, FechaActualizacion= NOW() WHERE cve_OfertaEdu = :Id");
+		$stmt = Conexion::conectar()->prepare("UPDATE oferta_edu SET Nombre=:Oferta, Costo=:Costo, Duracion=:Durac, Descripcion=:Descr, cve_Nivel=:Nivel, Cve_Modalidad=:Mod,id_subcategoria=:Subcat,OfertaHtml=:OferHtml, FechaActualizacion= NOW() WHERE cve_OfertaEdu = :Id");
 		
 		//$stmt->bindParam(":NomCen", $datosof["nombreCentro"], PDO::PARAM_STR);
 		$stmt->bindParam(":Oferta", $datosof["oferta"], PDO::PARAM_STR);
@@ -412,8 +438,8 @@ class ModeloConsulta{
 		$stmt->bindParam(":Durac", $datosof["duracion"], PDO::PARAM_STR);
 		$stmt->bindParam(":Descr", $datosof["desc"], PDO::PARAM_STR);
 		$stmt->bindParam(":Nivel", $datosof["nivel"], PDO::PARAM_INT);
+		$stmt->bindParam(":OferHtml", $datosof["oferHtml"], PDO::PARAM_STR);
 		$stmt->bindParam(":Mod", $datosof["mod"], PDO::PARAM_INT);
-		$stmt->bindParam(":Status", $datosof["status"], PDO::PARAM_INT);
 		$stmt->bindParam(":Subcat", $datosof["subcate"], PDO::PARAM_INT);
 		$stmt->bindParam(":Id", $datosof["idOferta"], PDO::PARAM_INT);
 		if($stmt->execute()){
@@ -480,7 +506,7 @@ class ModeloConsulta{
 		$stmt->bindParam(":CostoPeri", $datos["costoPeri"], PDO::PARAM_STR);
 		$stmt->bindParam(":Cate", $datos["cate"], PDO::PARAM_INT);
 		$stmt->bindParam(":NomPdf", $datos["nomPdf"], PDO::PARAM_STR);
-		$stmt->bindParam(":Moda", $datos["Moda"], PDO::PARAM_INT);
+		$stmt->bindParam(":Moda", $datos["moda"], PDO::PARAM_INT);
 		$stmt->bindParam(":Promo", $datos["promo"], PDO::PARAM_STR);
 		
 		if($stmt->execute()){
@@ -500,10 +526,23 @@ class ModeloConsulta{
 	}
 	//Para mostrar Opcionales de Oferta
 	static public function mdlOpcionalesOferta($cveOferta){
-		$consulta = Conexion::conectar()->prepare("SELECT DISTINCT * FROM opcionales_oferta__plantel WHERE cve_OfertaEdu=$cveOferta");
+		$consulta = Conexion::conectar()->prepare("SELECT DISTINCT cve_Opcional FROM opcionales_oferta__plantel WHERE cve_OfertaEdu=$cveOferta");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
+	//Obtener el ultimo id de ofertas
+	static public function mdlObtenerIdOferta(){
+		$stmt2 = Conexion::conectar()->prepare("SELECT cve_OfertaEdu FROM oferta_edu ORDER BY cve_OfertaEdu  DESC LIMIT 1");
+		$stmt2 -> execute();
+		return $stmt2 -> fetch();
+	}
+	//Para mostrar Planteles
+	static public function mdlMostrarPlantelesOferta(){
+		$consulta = Conexion::conectar()->prepare("SELECT cve_Plantel, Nombre_Plantel,Tipo_Plantel FROM plantel");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+
 	//*****************************************************************
 																	//								REPORTES
 	//*****************************************************************
