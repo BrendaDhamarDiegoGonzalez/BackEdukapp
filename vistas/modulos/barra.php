@@ -91,6 +91,12 @@
                   <p>Aprobadas</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a   class="nav-link"  data-toggle="modal" data-target="#mostrarmodal">
+                  <i class="fas fa-plus-circle nav-icon"></i>
+                  <p> Agregar Oferta</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item has-treeview">
@@ -124,4 +130,40 @@
     </div>
     <!-- /.sidebar -->
   </aside>
+</div>
+
+
+<div class="modal" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Selecciona un Centro Educativo</h5>
+      </div>
+      <div class="modal-body">
+        <form id="contat-form" class="contact" method="post" action="<?php echo $url."insertarOferta" ?>">
+          <div class="form-group">
+            <?php $centros = ModeloConsulta::mdlMostrarCentrosActivos(); ?>
+            <select name="centro" id="centro" class="form-control">
+              <?php
+              if (count($centros) > 0)
+              {
+              foreach ($centros as $key => $value) {
+              $idCen = $value["cve_Ctro_Educativo"];
+              $nomCen = $value["Nombre_Ctro_Educativo"];
+              ?>
+              <option value="<?php echo $idCen; ?>"><?php echo $nomCen; ?></option>
+              <?php
+              }
+              }
+              ?>
+            </select>
+          </div>
+          <br>
+          <div class="text-center">
+            <input class=" btn btn-primary" type="submit"  value="Siguiente" id="btn-enviar" >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

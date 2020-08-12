@@ -1,3 +1,10 @@
+<?php 
+    if(isset($_POST["centro"])){
+      $cveCentro=$_POST["centro"];
+      //print_r($_POST['centro']);
+      $planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro); 
+    }
+   ?>
 <body>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
@@ -9,27 +16,37 @@
         <div class="">
           <form method="post"  action="<?php echo $url."registro"?>" enctype="multipart/form-data" id="frm-test" name="frm-test" >
             <div class="form-group">
-              <label for="formGroupExampleInput">Nombre(s)</label>
-              <input type="text" class="form-control" id="nombreUsu" name="nombreOfe" placeholder="Nombre(s)">
+              <label for="formGroupExampleInput">Nombre</label>
+              <input type="text" class="form-control" id="nombreOfe" name="nombreOfe" placeholder="Nombre de la oferta">
             </div>
+            <div class="d-none"><input type="cveCentro" name="cveCentro" value="<?php echo $cveCentro; ?>"></div>
             <div class="form-group">
-            <label for="formGroupExampleInput2">Plantel</label>
-            <?php $planteles = ModeloConsulta::mdlMostrarPlantelesOferta(); ?>
-            <select name="plantel" id="plantel" class="form-control">
-              <?php
-              if (count($planteles) > 0)
-              {
-              foreach ($planteles as $key => $value) {
-              $idplan = $value["cve_Plantel"];
-              $nomplan = $value["Nombre_Plantel"];
-              $tipo=$value["Tipo_Plantel"];?>
-              <option value="<?php echo $idplan; ?>"><?php echo $nomplan." (".$tipo.")"; ?></option>
-              <?php
-              }
-              }
-              ?>
-            </select>
-          </div>
+              <label for="formGroupExampleInput2">Planteles Disponibles </label>
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th class="text-center">Agregar</th>
+                    <th>Plantel</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  if (count($planteles) > 0){
+                    foreach ($planteles as $key => $value) {
+                    $idplan = $value["cve_Plantel"];
+                    $nomplan = $value["Nombre_Plantel"];
+                    $tipo=$value["Tipo_Plantel"];
+                  ?>
+                  <tr>
+                    <td class="text-center"><input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"></input></td>
+                    <td><?php echo $nomplan." (".$tipo.")";?></td>
+                  </tr>
+                  <?php  }}?>
+                  
+                </tbody>
+              </table>
+              
+            </div>
             <div class="form-group">
               <label for="formGroupExampleInput">Costo</label>
               <input type="text" class="form-control" id="costo" name="costo" placeholder="$ 00,000.00 MXN">
@@ -121,4 +138,5 @@
 </div>
 </div>
 </div>
+
 </body>

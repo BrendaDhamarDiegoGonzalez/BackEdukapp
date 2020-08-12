@@ -26,7 +26,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 <div class="content-wrapper">
 	<div class="content-header align-content-center ">
 		<div class="col-12 py-3"><!-- Titulo -->
-		<h1 class="m-0 text-dark text-center">Modificación de  <?php echo $oferta;  ?></h1>
+		<h1 class="m-0 text-dark text-center">Modificación de Oferta Educativa</h1>
 		</div><!-- Fin titulo -->
 		<div class="card px-5">
 			<div class="card-body p-0">
@@ -166,7 +166,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 						</div>
 						<?php }  ?>
 						<!--Planteles-->
-						<div class="invisible off"><input type="cveCentro" name="cveCentro" value="<?php echo $cveCentro; ?>"></div>
+						<div class="d-none"><input type="cveCentro" name="cveCentro" value="<?php echo $cveCentro; ?>"></div>
 						<div class="form-group">
 							<label for="formGroupExampleInput2">Planteles </label>
 							<table class="table m-0">
@@ -175,7 +175,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 										<th class="text-center">Eliminar</th>
 										<th>Plantel</th>
 									</tr>
-									<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); ?>
+									<?php $planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro); ?>
 								</thead>
 								<tbody>
 									<?php
@@ -184,13 +184,14 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 										foreach ($planteles as $key => $value) {
 										$idplan = $value["cve_Plantel"];
 										$nomplan = $value["Nombre_Plantel"];
+										$tipo=$value["Tipo_Plantel"];
 										foreach ($planOfertas as $key => $value) {
 										$idPlantel=$value['cve_Plantel'];
 										if ($idplan==$idPlantel) {
 									?>
 									<tr>
 										<td class="text-center"><input name="plantelesElim[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"></input></td>
-										<td><?php echo $nomplan;?></td>
+										<td><?php echo $nomplan." (".$tipo.")";?></td>
 									</tr>
 									<?php  }}}}?>
 									
@@ -203,7 +204,7 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 										<th class="text-center">Agregar</th>
 										<th>Plantel</th>
 									</tr>
-									<?php $planteles = ModeloConsulta::mdlPlanteles($cveCentro); ?>
+									<?php $planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro); ?>
 								</thead>
 								<tbody>
 									<?php
@@ -211,10 +212,11 @@ $opcOfertas=ModeloConsulta::mdlOpcionalesOferta($cveOferta);
 										foreach ($planteles as $key => $value) {
 										$idplan = $value["cve_Plantel"];
 										$nomplan = $value["Nombre_Plantel"];
+										$tipo=$value["Tipo_Plantel"];
 									?>
 									<tr>
 										<td class="text-center"><input name="planteles[]" class="form-check-input position-static" value="<?php echo $idplan; ?>" type="checkbox"></input></td>
-										<td><?php echo $nomplan;?></td>
+										<td><?php echo $nomplan." (".$tipo.")";?></td>
 									</tr>
 									<?php  }}?>
 									

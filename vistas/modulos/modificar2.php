@@ -25,16 +25,16 @@ if(isset($_POST["nombre"])){
 	$respuesta = ModeloConsulta::mdlEditarCentro($datos);
 if($respuesta == "ok"){
 ?>
-<div class="content-wrapper">
-	<div class="content-header align-content-center ">
-		<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-			<strong>Centro Modificado!</strong> Los datos fueron modificados
-		</div>
-		<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>
-		</div>
-	</div>
-</div>
+<script type="text/javascript">
+    var mensaje;
+    var opcion = confirm("Datos Modificados");
+    if (opcion == true) {
+      window.location.href="<?php echo $url."modificar/".$cveCentro?>" 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+</script>
 <?php
 }else{
 ?>
@@ -71,16 +71,16 @@ $datosPlan = array(
 $respuesta = ModeloConsulta::mdlEditarPlantel($datosPlan);
 if($respuesta == "ok"){
 ?>
-<div class="content-wrapper">
-	<div class="content-header align-content-center ">
-		<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-			<strong>Plantel Modificado!</strong> Los datos fueron modificados
-		</div>
-		<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>
-		</div>
-	</div>
-</div>
+<script type="text/javascript">
+    var mensaje;
+    var opcion = confirm("Datos Modificados");
+    if (opcion == true) {
+      window.location.href="<?php echo $url."modificarPlan/".$cvePlan?>" 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+</script>
 <?php
 }else{
 ?>
@@ -114,16 +114,16 @@ $datosus = array(
 $respuesta = ModeloConsulta::mdlEditarUsuario($datosus);
 if($respuesta == "ok"){
 ?>
-<div class="content-wrapper">
-	<div class="content-header align-content-center ">
-		<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-			<strong>Usuario Modificado!</strong> Los datos fueron modificados
-		</div>
-		<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."usuarios"?>" >Aceptar</a></button>
-		</div>
-	</div>
-</div>
+<script type="text/javascript">
+    var mensaje;
+    var opcion = confirm("Datos Modificados");
+    if (opcion == true) {
+      window.location.href="<?php echo $url."modificarUsuario/".$cveUsuario?>" 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+</script>
 <?php
 }else{
 ?>
@@ -183,7 +183,7 @@ if ($cve_plantelElim>0) {
 
 if(isset($_POST["planteles"])){
 $cveCentro=$_POST['cveCentro'];
-$planteles = ModeloConsulta::mdlPlanteles($cveCentro);
+$planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro);
 
 
 if (count($planteles) > 0){
@@ -199,7 +199,7 @@ if ($cve_plantel>0) {
 
 if(isset($_POST["opcionales"])){
 	$cveCentro=$_POST['cveCentro'];
-$planteles = ModeloConsulta::mdlPlanteles($cveCentro);
+$planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro);
 $opciones = ModeloConsulta::mdlMostrarOpcionales();
 
 foreach ($planteles as $key => $value) {
@@ -217,30 +217,31 @@ if ($opcion>0) {
 	
 $respuesta = ModeloConsulta::mdlEditarOferta($datosof);
 if($respuesta == "ok"){
-?>
-<div class="content-wrapper">
-	<div class="content-header align-content-center ">
-		<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-			<strong>Oferta Modificada!</strong> Los datos fueron modificados
-		</div>
-		<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."revision"?>" >Aceptar</a></button>
-		</div>
-	</div>
-</div>
+	?>
+<script type="text/javascript">
+    var mensaje;
+    var opcion = confirm("Datos Modificados");
+    if (opcion == true) {
+      window.location.href="<?php echo $url."modificarOferta/".$cveOferta?>" 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+</script>
 <?php
 }else{
 ?>
-<div class="content-wrapper">
-	<div class="content-header align-content-center ">
-		<div class="alert alert-danger" role="alert">
-			<strong>Algo salió mal  </strong> Rellene todos los campos del formulario
-		</div>
-		<div class="align-content-center">
-			<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3">
-		</div>
-	</div>
-</div>
+<script type="text/javascript">
+    var mensaje;
+    var opcion = confirm("Ocurrió un error");
+    if (opcion == true) {
+      window.location.href=history.back(); 
+  } else {
+      mensaje = "Ok";
+  }
+  document.getElementById("ejemplo").innerHTML = mensaje;
+</script>
 <?php
 }
 }
+

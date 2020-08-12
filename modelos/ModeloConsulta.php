@@ -19,6 +19,12 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
+	//Para mostrar centros activos
+	static public function mdlMostrarCentrosActivos(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE STATUS=1");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
 	//Centros educativos hoy
 	static public function mdlCenhoy($hoy){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM ctro_educativo WHERE Fecha_Registro>='$hoy'");
@@ -109,6 +115,13 @@ class ModeloConsulta{
 			WHERE oferta_edu.Status ='0' ORDER BY oferta_edu.cve_OfertaEdu");
 		$consulta -> execute();
 		return $consulta -> fetchAll();
+	}
+	//Para mostrar Planteles
+	static public function mdlPlantelesActivos($cveCentro){
+		$stmt = Conexion::conectar()->prepare("SELECT *FROM plantel WHERE cve_Ctro_Educativo=$cveCentro AND STATUS=1");
+		$stmt -> execute();
+		
+		return $stmt -> fetchAll();
 	}
 	//Para tabla Ofertas aprobadas
 	static public function mdlMostrarOaprobadas(){

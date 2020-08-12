@@ -37,4 +37,9 @@ Modificaciones en titulos
 ### Versión 12 
 >Editor de texto en insertar y modificar oferta
 
+### Versión 13
+>Ventanas emergentes después de modificar datos 
+>Nuevo item en barra de navegación para agregar oferta
+>Modificaciones al insertar oferta
+
 Visita ![Edukapp](https://edukapp.com.mx/)

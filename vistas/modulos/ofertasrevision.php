@@ -21,14 +21,6 @@
         </div>
         </form><!--Termina formulario de buscar-->
         </div><!-- Fin sección buscar oferta-->
-        <div class="px-3  col-sm-12"><!--Div insertar-->
-        <div class="form-group row">
-          <label class="col-form-label">Agregar Oferta  </label>
-          <div>
-            <button type="button" class="btn btn-primary mx-2"><a class="text-light" href="<?php echo $url."insertarOferta"?>"><i class=" fas fa-plus-square"></i></a></button>
-          </div>
-        </div>
-        </div><!--Fin div insertar-->
         <div class="card px-5"><!-- /.card-header -->
         <div class="card-body p-0">
           <div class="table-responsive">

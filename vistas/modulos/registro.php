@@ -161,13 +161,27 @@ if(isset($_POST["nombreOfe"])){
 	'promo'=>$_POST['promo']
 	);
 
-	/*print_r($datos);*/	
+	//print_r("*********************************************".$datos);	
 	
 	$respuesta = ModeloConsulta::mdlInsertarOferta($datos);
 	$obtenerId=ModeloConsulta::mdlObtenerIdOferta();
 	$cveOferta=$obtenerId[0];
-	$cve_plantel=$_POST['plantel'];
-	$respuesta = ModeloConsulta::mdlIngresarPlantelOferta($cveOferta,$cve_plantel);
+	//$cve_plantel=$_POST['plantel'];
+	//$respuesta = ModeloConsulta::mdlIngresarPlantelOferta($cveOferta,$cve_plantel);
+	if(isset($_POST["planteles"])){
+$cveCentro=$_POST['cveCentro'];
+$planteles = ModeloConsulta::mdlPlantelesActivos($cveCentro);
+
+if (count($planteles) > 0){
+for($i=0;$i<count($planteles);$i++){
+	if (isset($_POST["planteles"][$i]) ){
+	$cve_plantel=$_POST["planteles"][$i];
+if ($cve_plantel>0) {
+	$insertar= ModeloConsulta::mdlIngresarPlantelOferta($cveOferta,$cve_plantel);
+	//print_r($cve_plantel."Planteles a ingresar");
+	
+}}}}
+}
 
 
 	//print_r($respuesta);
