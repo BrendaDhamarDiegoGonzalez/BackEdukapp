@@ -1,6 +1,6 @@
 <?php
 class Ruta{
 	static public function ctrRuta(){
-		return "http://localhost/BackEdukapp/";
+		return "http://localhost/CertificadosBack/";
 	}
 }

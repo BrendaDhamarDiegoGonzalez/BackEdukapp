@@ -1,8 +1,31 @@
 <?php
-
-
 class ControladorConsultas{
-	
+	static public function ctrCursos(){
+		$respuesta = ModeloConsulta::mdlCursos();
+
+		return $respuesta;
+	}
+	static public function ctrAlumnos(){
+		$respuesta = ModeloConsulta::mdlAlumnos();
+
+		return $respuesta;
+	}
+	static public function ctrBuscarCurso($nombre){
+		$respuesta = ModeloConsulta::mdlBuscarCurso($nombre);
+
+		return $respuesta;
+	}
+	 
+	static public function ctrRegistrarCurso($datosCurso){
+		$respuesta = ModeloConsulta::mdlRegistrarCurso($datosCurso);
+
+		return $respuesta;
+	}
+	static public function ctrAlumnosxCurso($id_curso){
+		$respuesta = ModeloConsulta::mdlAlumnosxCurso($id_curso);
+
+		return $respuesta;
+	}
 	static public function ctrConsultaBD(){
 
 		$respuesta = ModeloConsulta::mdlConsultaBD();
@@ -41,13 +64,7 @@ class ControladorConsultas{
 		return $respuesta;
 
 	}
-	static public function ctrNomCentro($cveCentro){
-
-		$respuesta = ModeloConsulta::mdlMostrarCentrosForm($cveCentro);
-		 
-		return $respuesta;
-
-	}
+	
 	//Para llenar tabla usuarios
 	static public function ctrUsuarios(){
 

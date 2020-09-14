@@ -1,12 +1,12 @@
 <?php
 if(isset($_POST["buscar"])){
 $nombre=$_POST['buscar'];
-$respuesta = ModeloConsulta::mdlBuscarCentro($nombre);
+$respuesta =ControladorConsultas::ctrBuscarCurso($nombre);
 ?>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
     <div class="col-12"><!-- Titulo -->
-    <h1 class="m-0 text-dark text-center">Centros Educativos Encontrados</h1>
+    <h1 class="m-0 text-dark text-center">Cursos Educativos Encontrados</h1>
     </div><!-- Fin titulo -->
   </div>
   <div class="card px-5"><!-- TABLE: Centros -->
@@ -15,7 +15,7 @@ $respuesta = ModeloConsulta::mdlBuscarCentro($nombre);
     <table class="table m-0">
       <thead>
         <tr>
-          <th class="text-center">Centro</th>
+          <th class="text-center">Curso</th>
           <th class="text-center">Status</th>
           <th class="text-center">Modificar</th>
           <th class="text-center">Eliminar</th>
@@ -26,9 +26,9 @@ $respuesta = ModeloConsulta::mdlBuscarCentro($nombre);
         <?php
         
         foreach ($respuesta as $key => $mostrar) {
-        $nombre=$mostrar['Nombre_Ctro_Educativo'];
-        $status=$mostrar['Status'];
-        $id_centro=$mostrar['cve_Ctro_Educativo'];
+        $nombre=$mostrar['nombre_curso'];
+        $status=$mostrar['status'];
+        $id_curso=$mostrar['id_curso'];
         ?>
         <tr>
           <td><?php echo $nombre ?></td>
@@ -48,9 +48,9 @@ $respuesta = ModeloConsulta::mdlBuscarCentro($nombre);
           <?php
           }
           ?>
-          <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificar/".$id_centro?>"> <i class="fas fa-pen text-light"></i></a></button></td>
-          <td class="text-center"><button type="button" name="eliminar"class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminar/".$id_centro?>"><i class="far fa-trash-alt"></i></a></button></td>
-          <td class="text-center"><button type="button" class="btn badge-warning" ><a href="<?php echo $url."planteles/".$id_centro?>"><i class="far fa-eye"></i></a></button></td>
+          <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificar/".$id_curso?>"> <i class="fas fa-pen text-light"></i></a></button></td>
+          <td class="text-center"><button type="button" name="eliminar"class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminar/".$id_curso?>"><i class="far fa-trash-alt"></i></a></button></td>
+          <td class="text-center"><button type="button" class="btn badge-warning" ><a href="<?php echo $url."planteles/".$id_curso?>"><i class="far fa-eye"></i></a></button></td>
         </tr>
         <?php
         }
@@ -62,17 +62,17 @@ $respuesta = ModeloConsulta::mdlBuscarCentro($nombre);
   </div><!-- /.card -->
 </div>
 <?php
-//****************************************************PLANTELES*****************************************************************+
+//****************************************************ALUMNOS*****************************************************************+
 }
-if(isset($_POST["buscarPlantel"])){
-$nombre=$_POST['buscarPlantel'];
-$cve=$_POST['cve'];
-$planteles=ModeloConsulta::mdlBuscarPlantel($nombre,$cve);
+if(isset($_POST["buscarAlumno"])){
+$nombre=$_POST['buscarAlumno'];
+$id=$_POST['id'];
+$alumnos=ModeloConsulta::mdlBuscarAlumno($nombre,$id);
 ?>
 <div class="content-wrapper">
   <div class="content-header align-content-center ">
     <div class="col-12"><!-- Titulo -->
-    <h1 class="m-0 text-dark text-center">Planteles Encontrados</h1>
+    <h1 class="m-0 text-dark text-center">Alumnos encontrados</h1>
     </div><!-- Fin titulo -->
   </div>
   <div class="card px-5">
@@ -82,56 +82,161 @@ $planteles=ModeloConsulta::mdlBuscarPlantel($nombre,$cve);
         <table class="table m-0">
           <thead>
             <tr>
-              <th>Planteles</th>
-              <th class="text-center">Estatus</th>
+              <th>Nombre(s) </th>
+              <th>Apellidos</th>
+              <th class="text-center">Matrícula</th>
+              <th class="text-center">CURP</th>
+              <th class="text-center">Status</th>
               <th class="text-center">Modificar</th>
               <th class="text-center">Eliminar</th>
-              
             </tr>
           </thead>
           <tbody>
-            <?php
-            
-            
-            foreach ($planteles as $key => $mostrar) {
-            $plan=$mostrar['Nombre_Plantel'];
-            $status=$mostrar['Status'];
-            $id_Plantel=$mostrar['cve_Plantel'];
-            
-            ?>
+                  <?php
+                  foreach ($alumnos as $key => $mostrar) {
+                  $nombre=$mostrar['nombre_alumno'];
+                  $apellidos=$mostrar['apellidos'];
+                  $matri=$mostrar['matricula'];
+                  $curp=$mostrar['curp'];
+                  $status=$mostrar['status'];
+                  $id_alum=$mostrar['id_alumno'];
+                  
+                  ?>
+                  <script type="text/javascript">
+                  function alerta()
+                  {
+                  var mensaje;
+                  var opcion = confirm("¿Modificar Status?");
+                  if (opcion == true) {
+                  window.location.href="<?php echo $url."eliminarAlumno/".$id_alum?>"
+                  } else {
+                  mensaje = "Ok";
+                  }
+                  document.getElementById("ejemplo").innerHTML = mensaje;
+                  }
+                  </script>
+                  <tr>
+                    <td><?php echo $nombre ?></td>
+                    <td><?php echo $apellidos ?></td>
+                    <td><?php echo $matri?></td>
+                    <td><?php echo $curp?></td>
+                    <?php
+                    if ($status==1) {
+                    ?>
+                    <td class="text-center">
+                      <button onclick="alerta();" type="button" class="btn btn-success">
+                      <i class="fas fa-toggle-on"></i>
+                      </button>
+                    </td>
+                    <?php
+                    }else {
+                    ?>
+                    <td class="text-center">
+                      <button onclick="alerta();" type="button" class="btn btn-warning">
+                      <i class="fas fa-toggle-off"></i>
+                      </button>
+                    </td>
+                    <?php
+                    }
+                    ?>
+                    <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarAlumno/".$id_alum?>"><i class="fas fa-pen"></i></a></button></td>
+                    <td class="text-center"><button type="button" class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminarAlumno/".$id_alum?>"><i class="far fa-trash-alt"></i></a></button></td>
+                  </tr>
+                  <?php
+                  }
+                  
+                  ?>
+                </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+//****************************************************ALUMNOS2*****************************************************************+
+}
+if(isset($_POST["buscarAlumno2"])){
+$nombre=$_POST['buscarAlumno2'];
+$alumnos=ModeloConsulta::mdlBuscarAlumno2($nombre);
+?>
+<div class="content-wrapper">
+  <div class="content-header align-content-center ">
+    <div class="col-12"><!-- Titulo -->
+    <h1 class="m-0 text-dark text-center">Alumnos encontrados</h1>
+    </div><!-- Fin titulo -->
+  </div>
+  <div class="card px-5">
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table m-0">
+          <thead>
             <tr>
-              <td><?php echo $plan ?></td>
-              <?php
-              if ($status==1) {
-              ?>
-              <td class="text-center">
-                <button type="button" class="btn btn-success">
-                <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
-                  <i class="fas fa-toggle-on"></i>
-                </a>
-                </button>
-              </td>
-              <?php
-              }else {
-              ?>
-              <td class="text-center">
-                <button type="button" class="btn btn-warning">
-                <a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>">
-                  <i class="fas fa-toggle-off"></i>
-                </a>
-                </button>
-              </td>
-              <?php
-              }
-              ?>
-              <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarPlan/".$id_Plantel?>"><i class="fas fa-pen"></i></a></button></td>
-              <td class="text-center"><button type="button" class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminarPlan/".$id_Plantel?>"><i class="far fa-trash-alt"></i></a></button></td>
+              <th>Nombre(s) </th>
+              <th>Apellidos</th>
+              <th class="text-center">Matrícula</th>
+              <th class="text-center">CURP</th>
+              <th class="text-center">Status</th>
+              <th class="text-center">Modificar</th>
+              <th class="text-center">Eliminar</th>
             </tr>
-            <?php
-            }
-            
-            ?>
-          </tbody>
+          </thead>
+          <tbody>
+                  <?php
+                  foreach ($alumnos as $key => $mostrar) {
+                  $nombre=$mostrar['nombre_alumno'];
+                  $apellidos=$mostrar['apellidos'];
+                  $matri=$mostrar['matricula'];
+                  $curp=$mostrar['curp'];
+                  $status=$mostrar['status'];
+                  $id_alum=$mostrar['id_alumno'];
+                  
+                  ?>
+                  <script type="text/javascript">
+                  function alerta()
+                  {
+                  var mensaje;
+                  var opcion = confirm("¿Modificar Status?");
+                  if (opcion == true) {
+                  window.location.href="<?php echo $url."eliminarAlumno/".$id_alum?>"
+                  } else {
+                  mensaje = "Ok";
+                  }
+                  document.getElementById("ejemplo").innerHTML = mensaje;
+                  }
+                  </script>
+                  <tr>
+                    <td><?php echo $nombre ?></td>
+                    <td><?php echo $apellidos ?></td>
+                    <td><?php echo $matri?></td>
+                    <td><?php echo $curp?></td>
+                    <?php
+                    if ($status==1) {
+                    ?>
+                    <td class="text-center">
+                      <button onclick="alerta();" type="button" class="btn btn-success">
+                      <i class="fas fa-toggle-on"></i>
+                      </button>
+                    </td>
+                    <?php
+                    }else {
+                    ?>
+                    <td class="text-center">
+                      <button onclick="alerta();" type="button" class="btn btn-warning">
+                      <i class="fas fa-toggle-off"></i>
+                      </button>
+                    </td>
+                    <?php
+                    }
+                    ?>
+                    <td class="text-center"><button type="button" class="btn btn-primary"><a class="text-light" href="<?php echo $url."modificarAlumno/".$id_alum?>"><i class="fas fa-pen"></i></a></button></td>
+                    <td class="text-center"><button type="button" class="btn badge-danger"><a class="text-light" href="<?php echo $url."eliminarAlumno/".$id_alum?>"><i class="far fa-trash-alt"></i></a></button></td>
+                  </tr>
+                  <?php
+                  }
+                  
+                  ?>
+                </tbody>
         </table>
       </div>
     </div>

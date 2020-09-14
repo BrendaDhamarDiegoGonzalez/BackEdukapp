@@ -1,19 +1,15 @@
 <?php
-if(isset($_POST["nombre"])){
+if(isset($_POST["nombreCurso"])){
 
-	$datos = array(
-	'nombre' => $_POST['nombre'],
-	'direccion' => $_POST['direccion'],
-	'telefono' => $_POST['telefono'],
-	'correo' => $_POST['correo'],
-	//'pagado'=>$_POST['pagado'],
-	'logo' => $_FILES['logo']['name'],
-	'imgcorp' => $_FILES['imgcorp']['name'],
-	'color'=>$_POST['color']
+	$datosCurso = array(
+	'nombre' => $_POST['nombreCurso'],
+	'horas' => $_POST['horas'],
+	'status' => $_POST['status']
 	);
 
 	//print_r($datos);
-	$respuesta = ModeloConsulta::mdlIngresarCentro($datos);
+	
+	$respuesta = ModeloConsulta::mdlRegistrarCurso($datosCurso);
 
 	//print_r($respuesta);
 	if($respuesta == "ok"){
@@ -24,12 +20,10 @@ if(isset($_POST["nombre"])){
 				<strong>Centro Registrado!</strong> Los datos fueron guardados
 			</div>
 			<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."cursos"?>" >Aceptar</a></button>
 			</div>
 		</div>
 	</div>
-
-
 	<?php
 	}else{
 	?>
@@ -44,26 +38,22 @@ if(isset($_POST["nombre"])){
 		</div>
 	</div>
 	<?php 
-	}		
+	}	
 }
- //****************************************************PLANTELES**************************************************
-if(isset($_POST["nombrePlantel"])){
+ //****************************************************ALUMNOS**************************************************
+if(isset($_POST["nombreAlumno"])){
 	
-	$datosPlan = array(
-	'cveCen'=>$_POST['cveCen'],
-	'nombre' => $_POST['nombrePlantel'],
-	'tipo' => $_POST['tipo'],
-	'telefonoPlan' => $_POST['telefonoPlan'],
-	'correoPlan' => $_POST['correoPlan'],
-	'envio'=>$_POST['envio'],
-	'cp'=>$_POST['cp'],
-	'mun'=>$_POST['mun'],
-	'colonia'=>$_POST['colonia']
+	$datosAlumno = array(
+	'nombre' => $_POST['nombreAlumno'],
+	'ape' => $_POST['apellidos'],
+	'matri' => $_POST['matricula'],
+	'curp' => $_POST['curp'],
+	'status'=>$_POST['status']
 	);
 
 	//print_r($datosPlan);
 	
-	$respuesta = ModeloConsulta::mdlIngresarPlantel($datosPlan);
+	$respuesta = ModeloConsulta::mdlIngresarAlumno($datosAlumno);
 
 	//print_r($respuesta);
 
@@ -72,10 +62,10 @@ if(isset($_POST["nombrePlantel"])){
 	<div class="content-wrapper">
 		<div class="content-header align-content-center ">
 			<div class="p-6 alert alert-primary text-center align-content-center" role="alert" >
-				<strong>Plantel Registrado!</strong> Los datos fueron guardados
+				<strong>Alumno Registrado!</strong> Los datos fueron guardados
 			</div>
 			<div class="align-content-center">
-			<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3">
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."alumnos"?>" >Aceptar</a></button>
 			</div>
 		</div>
 	</div>
@@ -90,7 +80,7 @@ if(isset($_POST["nombrePlantel"])){
 				<strong>Oh no!</strong> Algo salió mal
 			</div>
 			<div class="align-content-center">
-			<input type="button" onclick="history.back()" name="Regresar" value="Regresar" class="btn btn-info mx-3">
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."alumnos"?>" >Aceptar</a></button>
 			</div>
 		</div>
 	</div>

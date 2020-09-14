@@ -1,7 +1,184 @@
 <?php
 require_once "conexion.php";
 class ModeloConsulta{
-	//**************************** ASPIRANTES***********************************//
+	//***************************Información para tablero *******************************//
+	static public function mdlCursos(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM curso where status=1");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	static public function mdlAlumnos(){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM alumno");
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//*****************************CURSOS****************************************
+	//Buscar curso
+	static public function mdlBuscarCurso($nombre){
+		$nombre = '%'.$nombre.'%';
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM curso WHERE nombre_curso LIKE :Nombre");
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Registrar curso
+	static public function mdlRegistrarCurso($datosCurso){
+		$stmt = Conexion::conectar()->prepare("CALL sp_curso_inserta (:Nombre,:Horas,:Status)");
+		$stmt->bindParam(":Status", $datosCurso["status"], PDO::PARAM_INT);
+		$stmt->bindParam(":Nombre", $datosCurso["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Horas", $datosCurso["horas"], PDO::PARAM_STR);
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		//$stmt->close();
+		$stmt = null;
+	}
+	//Para tabla modificar
+	static public function mdlInfoCurso($id_curso){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM curso WHERE id_curso = :id");
+		$consulta -> bindParam(":id", $id_curso, PDO::PARAM_INT);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Modificar curso
+		static public function mdlEditarCurso($datosCurso){
+		$stmt = Conexion::conectar()->prepare("UPDATE curso SET nombre_curso = :Nombre, horas = :Horas, status = :Status WHERE id_curso = :id");
+		
+		$stmt->bindParam(":Nombre", $datosCurso["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Horas", $datosCurso["horas"], PDO::PARAM_STR);
+		$stmt->bindParam(":Status", $datosCurso["status"], PDO::PARAM_INT);
+		$stmt->bindParam(":id", $datosCurso['id'], PDO::PARAM_INT);
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			//return "error";
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		//$stmt->close();
+		$stmt = null;
+	}
+	//Actualizar status de curso desactivar
+	static public function mdlDesactivarCurso($id_curso){
+					$stmt = Conexion::conectar()->prepare("UPDATE curso SET STATUS = 0 WHERE id_curso = :id");
+					$stmt -> bindParam(":id", $id_curso, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+	//Actualizar status de curso activar
+	static public function mdlActivarCurso($id_curso){
+					$stmt = Conexion::conectar()->prepare("UPDATE curso SET STATUS = 1 WHERE id_curso = :id");
+					$stmt -> bindParam(":id", $id_curso, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+	//**************************** ALUMNOS ***********************************//
+static public function mdlAlumnosxCurso($id_curso){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM alumno AL INNER JOIN certificado CE ON AL.id_alumno=CE.id_alumno WHERE id_curso=:id");
+		$consulta -> bindParam(":id", $id_curso, PDO::PARAM_INT);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Buscar alumno
+	static public function mdlBuscarAlumno($nombre,$id){
+		$nombre = '%'.$nombre.'%';
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM alumno  AL INNER JOIN certificado CE ON AL.id_alumno=CE.id_alumno WHERE nombre_alumno LIKE :Nombre AND id_curso=:Id");
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta->bindParam(":Id", $id, PDO::PARAM_INT);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Buscar alumno2
+	static public function mdlBuscarAlumno2($nombre){
+		$nombre = '%'.$nombre.'%';
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM alumno  AL INNER JOIN certificado CE ON AL.id_alumno=CE.id_alumno WHERE nombre_alumno LIKE :Nombre");
+		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Registrar Alumno
+	static public function mdlIngresarAlumno($datosAlumno){
+		$stmt = Conexion::conectar()->prepare("CALL sp_alumno_inserta (:Matr,:Nom,:Apell,:Curp,:Status)");
+		$stmt->bindParam(":Nom", $datosAlumno["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Apell", $datosAlumno["ape"], PDO::PARAM_STR);
+		$stmt->bindParam(":Matr", $datosAlumno["matri"], PDO::PARAM_STR);
+		$stmt->bindParam(":Curp", $datosAlumno["curp"], PDO::PARAM_STR);
+		$stmt->bindParam(":Status", $datosAlumno['status'], PDO::PARAM_INT);
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		//$stmt->close();
+		$stmt = null;
+	}
+	//Para tabla modificar
+	static public function mdlInfoAlumno($cveAlumno){
+		$consulta = Conexion::conectar()->prepare("SELECT * FROM alumno AL INNER JOIN certificado CE ON AL.id_alumno=CE.id_alumno WHERE AL.id_alumno= :id");
+		$consulta -> bindParam(":id", $cveAlumno, PDO::PARAM_INT);
+		$consulta -> execute();
+		return $consulta -> fetchAll();
+	}
+	//Actualizar status de curso desactivar
+	static public function mdlDesactivarAlumno($id_alumno){
+					$stmt = Conexion::conectar()->prepare("UPDATE alumno SET STATUS = 0 WHERE id_alumno = :id");
+					$stmt -> bindParam(":id", $id_alumno, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+	//Actualizar status de curso activar
+	static public function mdlActivarAlumno($id_alumno){
+					$stmt = Conexion::conectar()->prepare("UPDATE alumno SET STATUS = 1 WHERE id_alumno= :id");
+					$stmt -> bindParam(":id", $id_alumno, PDO::PARAM_INT);
+					if($stmt -> execute()){
+						return "ok";
+					}else{
+							print_r(Conexion::conectar()->errorInfo());
+					}
+					$stmt-> close();
+					$stmt = null;
+	}
+	//Modificar Alumno
+		static public function mdlEditarAlumno($datosAlumno){
+		$stmt = Conexion::conectar()->prepare("UPDATE alumno SET nombre_alumno = :Nombre, apellidos = :Ape,matricula=:Matr,curp=:Curp, status = :Status WHERE id_alumno = :id");
+		
+		$stmt->bindParam(":Nombre", $datosAlumno["nombre"], PDO::PARAM_STR);
+		$stmt->bindParam(":Ape", $datosAlumno["apellidos"], PDO::PARAM_STR);
+		$stmt->bindParam(":Matr", $datosAlumno["matricula"], PDO::PARAM_STR);
+		$stmt->bindParam(":Curp", $datosAlumno["curp"], PDO::PARAM_STR);
+		$stmt->bindParam(":Status", $datosAlumno['status'], PDO::PARAM_INT);
+		$stmt->bindParam(":id", $datosAlumno['id_a'], PDO::PARAM_INT);
+
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			//return "error";
+			print_r(Conexion::conectar()->errorInfo());
+		
+		}
+		//$stmt->close();
+		$stmt = null;
+	}
+	//*************************************************************************************
 	static public function mdlConsultaBD(){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) from aspirante");
 		$stmt -> execute();
@@ -33,12 +210,7 @@ class ModeloConsulta{
 		return $stmt -> fetch();
 	}
 	//Para formulario modificar Centros/ Mostrar datos de un centro
-	static public function mdlMostrarCentrosForm($cveCentro){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE cve_Ctro_Educativo = :id");
-		$consulta -> bindParam(":id", $cveCentro, PDO::PARAM_INT);
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
+	
 //*************************************************OFERTAS************************************************************//
 	static public function mdlConsultaOfertas(){
 		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) FROM oferta_edu WHERE STATUS='0'");
@@ -173,7 +345,6 @@ class ModeloConsulta{
 					$stmt-> close();
 					$stmt = null;
 	}
-
 	//*************************************************PLANTELES************************************************************//
 	//Para tabla Planteles
 	static public function mdlPlanteles($cveCentro){
@@ -190,14 +361,7 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 	}
 	
-	//Para formulario modificar Planteles
-	static public function mdlMostrarPlantelForm($cvePlantel){
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM plantel WHERE cve_Plantel = :id");
-		$consulta -> bindParam(":id", $cvePlantel, PDO::PARAM_INT);
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
-	//Para formulario modificar usuario
+		//Para formulario modificar usuario
 	static public function mdlMostrarUsuarioForm($cveUsuario){
 		$consulta = Conexion::conectar()->prepare("SELECT * FROM usuario WHERE cve_Usuario = :id");
 		$consulta -> bindParam(":id", $cveUsuario, PDO::PARAM_INT);
@@ -205,7 +369,7 @@ class ModeloConsulta{
 		return $consulta -> fetchAll();
 	}
 	//********************************************************//
-											//							CRUD PARA CENTROS			  //
+																					//							CRUD PARA CENTROS			  //
 	//********************************************************//
 	//Ingresar
 	static public function mdlIngresarCentro($datos){
@@ -287,26 +451,12 @@ class ModeloConsulta{
 		//$stmt->close();
 		$stmt = null;
 	}
-	//Buscar centro
-	static public function mdlBuscarCentro($nombre){
-		$nombre = '%'.$nombre.'%';
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM ctro_educativo WHERE Nombre_Ctro_educativo LIKE :Nombre");
-		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
+	
 	//*******************************************************************************************************************//
 	//********************************************************//
-											//							CRUD PARA PLANTELES			  //
+																					//							CRUD PARA PLANTELES			  //
 	//********************************************************//
-	static public function mdlBuscarPlantel($nombre,$cve){
-		$nombre = '%'.$nombre.'%';
-		$consulta = Conexion::conectar()->prepare("SELECT * FROM plantel WHERE Nombre_Plantel LIKE :Nombre AND cve_Ctro_Educativo= :Cve");
-		$consulta->bindParam(":Nombre", $nombre, PDO::PARAM_STR);
-		$consulta->bindParam(":Cve", $cve, PDO::PARAM_INT);
-		$consulta -> execute();
-		return $consulta -> fetchAll();
-	}
+	
 	//Ingresar Plantel
 	static public function mdlIngresarPlantel($datosPlan){
 		
@@ -375,7 +525,7 @@ class ModeloConsulta{
 	}
 	//*******************************************************************************************************************//
 	//********************************************************//
-											//							CRUD PARA USUARIOS			  //
+																					//							CRUD PARA USUARIOS			  //
 	//********************************************************//
 	//Buscar Usuario
 	static public function mdlBuscarUsuario($nombre){
@@ -555,9 +705,8 @@ class ModeloConsulta{
 		$consulta -> execute();
 		return $consulta -> fetchAll();
 	}
-
 	//*****************************************************************
-																	//								REPORTES
+																									//								REPORTES
 	//*****************************************************************
 	static public function mdlReporteAspirantesHoy($hoy){
 		$consulta = Conexion::conectar()->prepare("SELECT Nombre_Aspirante, Apaterno_Aspirante,Amaterno_Estudiante, Celular_Aspirante, Telefono_Aspirante, CorreoE_Aspirante,Estado,Horario_Contactar,Forma_Contacto,OE.Nombre,CE.Nombre_Ctro_Educativo,aspirante.FechaAlta

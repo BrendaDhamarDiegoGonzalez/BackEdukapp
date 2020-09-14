@@ -60,15 +60,24 @@
 
             $modulo = $ruta[0];
 
-            if($modulo == "centros"){
-              //Centros educativos
-              include "modulos/centroseducativos.php";
-            }else if($modulo == "usuarios"){
-              //Panel de usuarios
-              include "modulos/paneldeusuarios.php";
-            }else if ($modulo =="revision") {
+            if($modulo == "cursos"){
+              include "modulos/cursos.php";
+
+            }else if ($modulo == "buscar"){
+                include "modulos/buscar.php";
+
+            }else if ($modulo == "insertar"){
+                include "modulos/insertarCurso.php";
+               
+            }else if($modulo == "alumnos"){
+
+              include "modulos/alumnos.php";
+            }else if($modulo == "alumnosxcurso"){
+
+              include "modulos/alumnosxcurso.php";
+            }else if ($modulo =="modificarAlumno") {
               //Ofertas en revisión
-              include "modulos/ofertasrevision.php";
+              include "modulos/modificarAlumno.php";
             }else if ($modulo=="aprobadas") {
               //Ofertas aprobadas
               include "modulos/ofertasaprobadas.php";
@@ -96,9 +105,6 @@
             }else if ($modulo == "modificar2"){
                 include "modulos/modificar2.php";
                
-            }else if ($modulo == "buscar"){
-                include "modulos/buscarCentro.php";
-               
             }else if ($modulo == "modificarPlan"){
                 include "modulos/modificarPlantel.php";
                
@@ -108,8 +114,8 @@
             }else if ($modulo == "modificarOferta"){
                 include "modulos/modificarOferta.php";
 
-            }else if ($modulo == "eliminarPlan"){
-                include "modulos/eliminarPlan.php";
+            }else if ($modulo == "eliminarAlumno"){
+                include "modulos/eliminarAlumno.php";
                
             }else if ($modulo == "generar"){
                 include "modulos/generadordereportes.php";

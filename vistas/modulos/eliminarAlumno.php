@@ -1,26 +1,27 @@
-<?php
+<?php 
 if (isset($_GET["ruta"])) {
 $ruta = explode("/",$_GET["ruta"]);
 if(isset($ruta[1])){
-$id_curso=$ruta[1];
+$id_alumno=$ruta[1];
 }
 }
-$curso=ModeloConsulta::mdlInfoCurso($id_curso);
-foreach ($curso as $key => $mostrar) {
+$alumno=ModeloConsulta:: mdlInfoAlumno($id_alumno);
+foreach ($alumno as $key => $mostrar) {
 $status=$mostrar['status'];
+$id_curso=$mostrar['id_curso'];
 }
 if ($status==1) {
-	$elm=ModeloConsulta::mdlDesactivarCurso($id_curso);
+	$elm=ModeloConsulta::mdlDesactivarAlumno($id_alumno);
 }else{
-	$elm=ModeloConsulta::mdlActivarCurso($id_curso);
+	$elm=ModeloConsulta::mdlActivarAlumno($id_alumno);
 }
 if($elm == "ok"){
 ?>
 <script type="text/javascript">
     var mensaje;
-    var opcion = confirm("Curso Eliminado");
+    var opcion = confirm("Modificación exitosa");
     if (opcion == true) {
-      window.location.href="<?php echo $url."cursos"?>" 
+      window.location.href="<?php echo $url."alumnosxcurso/".$id_curso?>"
   } else {
       mensaje = "Ok";
   }

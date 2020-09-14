@@ -2,34 +2,27 @@
 if (isset($_GET["ruta"])) {
 $ruta = explode("/",$_GET["ruta"]);
 if(isset($ruta[1])){
-	$cveCentro = $ruta[1];
-	$cvePlan=$ruta[1];
+	$id_curso = $ruta[1];
+	$idAlumno=$ruta[1];
 	$cveUsuario=$ruta[1];
 	$cveOferta=$ruta[1];
 }
 }
-if(isset($_POST["nombre"])){
-	$datos = array(
-	'nombre' => $_POST['nombre'],
-	'direccion' => $_POST['direccion'],
-	'telefono' => $_POST['telefono'],
-	'correo' => $_POST['correo'],
-	'pagado'=>$_POST['pagado'],
-	'logo' => $_FILES['logo']['name'],
-	'imgcorp' => $_FILES['imgcorp']['name'],
-	'color'=>$_POST['color'],
-	'id'=>$cveCentro
+if(isset($_POST["nombreCurso"])){
+	$datosCurso = array(
+	'nombre' => $_POST['nombreCurso'],
+	'horas' => $_POST['horas'],
+	'status' => $_POST['status'],
+	'id'=>$id_curso
 	);
-	//print_r($datos);
-	//print_r($id);
-	$respuesta = ModeloConsulta::mdlEditarCentro($datos);
+	$respuesta = ModeloConsulta::mdlEditarCurso($datosCurso);
 if($respuesta == "ok"){
 ?>
 <script type="text/javascript">
     var mensaje;
     var opcion = confirm("Datos Modificados");
     if (opcion == true) {
-      window.location.href="<?php echo $url."modificar/".$cveCentro?>" 
+      window.location.href="<?php echo $url."modificar/".$id_curso?>" 
   } else {
       mensaje = "Ok";
   }
@@ -44,38 +37,33 @@ if($respuesta == "ok"){
 			<strong>Oh no!</strong> Algo salió mal
 		</div>
 		<div class="align-content-center">
-			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."centros"?>" >Aceptar</a></button>
+			<button type="button" class="btn btn-primary btn-lg"><a class="text-light" href="<?php echo $url."cursos"?>" >Aceptar</a></button>
 		</div>
 	</div>
 </div>
 <?php
 		}
 }
-//**************************************************PLANTELES*******************************************************************
-if(isset($_POST["nombrePlan"])){
+//**************************************************ALUMNOS*******************************************************************
+if(isset($_POST["nombreAlumno"])){
 
-$datosPlan = array(
-'id_p'=>$cvePlan,
-'nombre' => $_POST['nombrePlan'],
-'tipo' => $_POST['tipo'],
-'telefonoPlan' => $_POST['telefonoPlan'],
-'correoPlan' => $_POST['correoPlan'],
-'envio'=>$_POST['envio'],
-'cp'=>$_POST['cp'],
-//'mun'=>$_POST['mun'],
-'colonia'=>$_POST['colonia']
+$datosAlumno = array(
+'id_a'=>$idAlumno,
+'nombre' => $_POST['nombreAlumno'],
+'apellidos' => $_POST['apellidos'],
+'matricula' => $_POST['matricula'],
+'curp' => $_POST['curp'],
+'status'=>$_POST['status']
 );
-//print_r($datosPlan);
-//print_r($id);
 
-$respuesta = ModeloConsulta::mdlEditarPlantel($datosPlan);
+$respuesta = ModeloConsulta::mdlEditarAlumno($datosAlumno);
 if($respuesta == "ok"){
 ?>
 <script type="text/javascript">
     var mensaje;
     var opcion = confirm("Datos Modificados");
     if (opcion == true) {
-      window.location.href="<?php echo $url."modificarPlan/".$cvePlan?>" 
+      window.location.href="<?php echo $url."modificarAlumno/".$idAlumno?>" 
   } else {
       mensaje = "Ok";
   }
